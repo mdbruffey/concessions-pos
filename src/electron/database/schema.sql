@@ -4,19 +4,19 @@ CREATE TABLE IF NOT EXISTS users (
     first_name TEXT,
     last_name TEXT,
     passcode INTEGER
-)
+);
 
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     default_price REAL NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS combos (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     default_price REAL NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS combo_items (
     combo_id INTEGER NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS combo_items (
     PRIMARY KEY (combo_id, product_id),
     FOREIGN KEY (combo_id) REFERENCES combos(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS sales (
     id INTEGER PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS sales (
     user_id INTEGER NOT NULL,
     time TEXT NOT NULL, --timestamp
     FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS sale_items (
     id INTEGER PRIMARY KEY,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS sale_items (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (combo_id) REFERENCES combos(id),
     FOREIGN KEY (price_modified_by) REFERENCES users(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS sessions (
     id INTEGER PRIMARY KEY,
@@ -56,25 +56,25 @@ CREATE TABLE IF NOT EXISTS sessions (
     started_by INTEGER NOT NULL,
     end TEXT NOT NULL, --timestamp
     ended_by INTEGER NOT NULL,
-    description TEXT --optional
+    description TEXT, --optional
     FOREIGN KEY (started_by) REFERENCES users(id),
     FOREIGN KEY (ended_by) REFERENCES users(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS session_sales (
     session_id INTEGER NOT NULL,
-    sale_id INTEGER NOT NULL
+    sale_id INTEGER NOT NULL,
     PRIMARY KEY (session_id, sale_id),
     FOREIGN KEY (session_id) REFERENCES sessions(id),
     FOREIGN KEY (sale_id) REFERENCES sales(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS shifts (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     session_id INTEGER NOT NULL,
     start TEXT NOT NULL,
-    end TEXT --begins null, updated to timestamp when shift ends
+    end TEXT, --begins null, updated to timestamp when shift ends
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (session_id) REFERENCES sessions(id)
-)
+);
