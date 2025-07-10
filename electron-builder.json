@@ -1,0 +1,11 @@
+{
+    "appId": "com.bruffey.concessions-pos",
+    "files": ["dist-electron", "dist-react"],
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+    },
+    "win": {
+        "target": ["portable"]
+    }
+}
