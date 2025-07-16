@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     id INTEGER PRIMARY KEY,
     start TEXT NOT NULL, --timestamp
     started_by INTEGER NOT NULL,
-    end TEXT NOT NULL, --timestamp
-    ended_by INTEGER NOT NULL,
+    end TEXT, --timestamp
+    ended_by INTEGER,
     description TEXT, --optional
     FOREIGN KEY (started_by) REFERENCES users(id),
     FOREIGN KEY (ended_by) REFERENCES users(id)
