@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
+    type TEXT,
     default_price REAL NOT NULL,
     image_path TEXT
 );
