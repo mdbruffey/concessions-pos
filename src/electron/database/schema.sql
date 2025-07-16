@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     first_name TEXT,
     last_name TEXT,
-    passcode INTEGER
+    pin INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS products (
