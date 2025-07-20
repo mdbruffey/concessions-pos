@@ -11,7 +11,7 @@ type Product = {
     name: string;
     type: string;
     default_price: number;
-    image_path: string;
+    image_path: string | null;
 };
 
 type Combo = {
