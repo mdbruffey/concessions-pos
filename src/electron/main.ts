@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import path from "path";
-import { isDev } from "./utils.js";
+import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
 
 const db = database;
@@ -18,7 +18,13 @@ app.on("ready", () => {
             path.join(app.getAppPath(), "/dist-react/index.html")
         );
     }
-    console.log(db.open);
+
+    ipcMainHandle("getProducts", () => getProducts());
+    ipcMainHandle("getCombos", () => getCombos());
+    ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
+    ipcMainHandle("startSession", (_, user) => startSession(user));
+    ipcMainHandle("endSession", (_, user) => endSession(user));
+    ipcMainHandle("createSale", (_, sale) => createSale(sale));
 });
 
 app.on("before-quit", () => {
