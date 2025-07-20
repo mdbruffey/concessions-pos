@@ -60,7 +60,7 @@ type EventPayloadMapping = {
     };
     authenticatePIN: {
         request: number;
-        response: User | null;
+        response: User | undefined;
     };
     startSession: {
         request: User;
@@ -80,7 +80,7 @@ interface Window {
     electron: {
         getProducts: () => Promise<Product[]>;
         getCombos: () => Promise<Combo[]>;
-        authenticatePIN: (pin: number) => Promise<User | null>;
+        authenticatePIN: (pin: number) => Promise<User | undefined>;
         startSession: (user: User) => Promise<Session>;
         createSale: (sale: Sale) => Promise<boolean>;
         endSession: (user: User) => Promise<Session>;
