@@ -11,3 +11,9 @@ export function getProducts(): Product[] {
     }
     return products;
 }
+
+export function getCombos(): Combo[] {
+    const stmt = db.prepare("SELECT * from combos");
+    const combos = stmt.all() as Combo[];
+    return combos;
+}
