@@ -25,11 +25,11 @@ export function authenticatePIN(pin: number): User {
 }
 
 /**
- * 
- * @param request  An object containing a user object and description of the session 
+ *
+ * @param request  An object containing a user object and description of the session
  * \{
- *      user: USER, 
- *      description: string 
+ *      user: USER,
+ *      description: string
  * \}
  * @returns The new session object or current session if one is already active
  */
@@ -51,4 +51,25 @@ export function startSession(request: StartSessionRequest): Session {
         request.description
     ) as Session;
     return newSession;
+}
+
+/**
+ * Concludes the current session by adding an end time to the entry and
+ * the id of the user who ended it.
+ * @param user User object of user ending the session
+ * @returns The completed session object
+ */
+export function endSession(user: User): Session {
+    const endTime = new Date();
+    const setCurrentSessionEnd = db.prepare(
+        "UPDATE sessions SET end = ?, ended_by = ? where end IS NULL RETURNING *"
+    );
+    const currentSession = setCurrentSessionEnd.get(
+        endTime,
+        user.id
+    ) as Session;
+    if (!currentSession) {
+        throw new Error("No active session...");
+    }
+    return currentSession;
 }

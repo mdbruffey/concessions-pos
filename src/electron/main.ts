@@ -2,7 +2,13 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
-import { getProducts, getCombos, authenticatePIN, startSession } from "./controllers.js";
+import {
+    getProducts,
+    getCombos,
+    authenticatePIN,
+    startSession,
+    endSession,
+} from "./controllers.js";
 
 const db = database;
 
