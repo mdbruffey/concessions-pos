@@ -49,6 +49,12 @@ type Session = {
     sales: Sale[];
 };
 
+/**Request object for starting a new session */
+type StartSessionRequest = {
+    user: User;
+    description: string;
+};
+
 type EventPayloadMapping = {
     getProducts: {
         request: undefined;
@@ -63,7 +69,7 @@ type EventPayloadMapping = {
         response: User | undefined;
     };
     startSession: {
-        request: User;
+        request: StartSessionRequest;
         response: Session;
     };
     endSession: {
@@ -81,7 +87,7 @@ interface Window {
         getProducts: () => Promise<Product[]>;
         getCombos: () => Promise<Combo[]>;
         authenticatePIN: (pin: number) => Promise<User | undefined>;
-        startSession: (user: User) => Promise<Session>;
+        startSession: (request: StartSessionRequest) => Promise<Session>;
         createSale: (sale: Sale) => Promise<boolean>;
         endSession: (user: User) => Promise<Session>;
     };

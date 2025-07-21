@@ -23,3 +23,32 @@ export function authenticatePIN(pin: number): User {
     const user = stmt.get(pin) as User;
     return user;
 }
+
+/**
+ * 
+ * @param request  An object containing a user object and description of the session 
+ * \{
+ *      user: USER, 
+ *      description: string 
+ * \}
+ * @returns The new session object or current session if one is already active
+ */
+export function startSession(request: StartSessionRequest): Session {
+    const startTime = new Date();
+    const getCurrentSession = db.prepare(
+        "SELECT * FROM sessions where end IS NULL"
+    );
+    const currentSession = getCurrentSession.get() as Session | null;
+    if (currentSession) {
+        return currentSession;
+    }
+    const insertNewSession = db.prepare(
+        "INSERT INTO sessions (start, started_by, description) VALUES (?,?,?) RETURNING *"
+    );
+    const newSession = insertNewSession.get(
+        startTime,
+        request.user.id,
+        request.description
+    ) as Session;
+    return newSession;
+}

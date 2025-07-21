@@ -4,7 +4,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
     getProducts: () => ipcInvoke("getProducts"),
     getCombos: () => ipcInvoke("getCombos"),
     authenticatePIN: (pin) => ipcInvoke("authenticatePIN", pin),
-    startSession: (user) => ipcInvoke("startSession", user),
+    startSession: (request) => ipcInvoke("startSession", request),
     endSession: (user) => ipcInvoke("endSession", user),
     createSale: (sale) => ipcInvoke("createSale", sale),
 } satisfies Window["electron"]);

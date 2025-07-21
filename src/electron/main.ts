@@ -2,7 +2,7 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
-import { getProducts, getCombos, authenticatePIN } from "./controllers.js";
+import { getProducts, getCombos, authenticatePIN, startSession } from "./controllers.js";
 
 const db = database;
 
@@ -23,7 +23,7 @@ app.on("ready", () => {
     ipcMainHandle("getProducts", () => getProducts());
     ipcMainHandle("getCombos", () => getCombos());
     ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
-    ipcMainHandle("startSession", (_, user) => startSession(user));
+    ipcMainHandle("startSession", (_, request) => startSession(request));
     ipcMainHandle("endSession", (_, user) => endSession(user));
     ipcMainHandle("createSale", (_, sale) => createSale(sale));
 });
