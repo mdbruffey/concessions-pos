@@ -1,8 +1,8 @@
 import db from "./database/db.js";
 
 export function getProducts(): Product[] {
-    const allProducts = db.prepare("SELECT * from products");
-    const products = allProducts.all() as Product[];
+    const allProducts = db.prepare<[],Product>("SELECT * from products");
+    const products = allProducts.all();
     if (products.length === 0) {
         const entry = db.prepare(
             "INSERT into products (name, type, default_price) VALUES(?,?,?)"
@@ -18,9 +18,9 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
-export function authenticatePIN(pin: number): User {
-    const stmt = db.prepare("SELECT * FROM users WHERE pin = ?");
-    const user = stmt.get(pin) as User;
+export function authenticatePIN(pin: number): User | undefined {
+    const stmt = db.prepare<number, User>("SELECT * FROM users WHERE pin = ?");
+    const user = stmt.get(pin);
     return user;
 }
 
@@ -35,21 +35,24 @@ export function authenticatePIN(pin: number): User {
  */
 export function startSession(request: StartSessionRequest): Session {
     const startTime = new Date();
-    const getCurrentSession = db.prepare(
+    const getCurrentSession = db.prepare<[], Session>(
         "SELECT * FROM sessions where end IS NULL"
     );
-    const currentSession = getCurrentSession.get() as Session | null;
+    const currentSession = getCurrentSession.get();
     if (currentSession) {
         return currentSession;
     }
-    const insertNewSession = db.prepare(
+    const insertNewSession = db.prepare<[string, number, string], Session>(
         "INSERT INTO sessions (start, started_by, description) VALUES (?,?,?) RETURNING *"
     );
     const newSession = insertNewSession.get(
-        startTime,
+        startTime.toDateString(),
         request.user.id,
         request.description
-    ) as Session;
+    );
+    if(!newSession){
+        throw new Error("Failed to create a session");
+    }
     return newSession;
 }
 
@@ -61,13 +64,13 @@ export function startSession(request: StartSessionRequest): Session {
  */
 export function endSession(user: User): Session {
     const endTime = new Date();
-    const setCurrentSessionEnd = db.prepare(
+    const setCurrentSessionEnd = db.prepare<[string, number], Session>(
         "UPDATE sessions SET end = ?, ended_by = ? where end IS NULL RETURNING *"
     );
     const currentSession = setCurrentSessionEnd.get(
-        endTime,
+        endTime.toDateString(),
         user.id
-    ) as Session;
+    );
     if (!currentSession) {
         throw new Error("No active session...");
     }
