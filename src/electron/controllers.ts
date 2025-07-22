@@ -13,8 +13,8 @@ export function getProducts(): Product[] {
 }
 
 export function getCombos(): Combo[] {
-    const stmt = db.prepare("SELECT * from combos");
-    const combos = stmt.all() as Combo[]; //This does not work as intended, lol
+    const stmt = db.prepare<[], Combo>("SELECT * from combos");
+    const combos = stmt.all();
     return combos;
 }
 
@@ -72,4 +72,34 @@ export function endSession(user: User): Session {
         throw new Error("No active session...");
     }
     return currentSession;
+}
+
+export function createSale(sale: Sale): number {
+    const insertSaleStmt = db.prepare("INSERT INTO sales VALUES(?,?,?)");
+    const insertSaleItemStmt = db.prepare(
+        "INSERT INTO sale_items VALUES(?,?,?,?,?,?,?)"
+    );
+
+    const createSaleTransaction = db.transaction((sale: Sale) => {
+        const result = insertSaleStmt.run(
+            sale.total,
+            sale.user_id,
+            sale.time
+        );
+        const saleId = result.lastInsertRowid as number;
+        for (let item of sale.items) {
+            insertSaleItemStmt.run(
+                saleId,
+                item.product_id,
+                item.combo_id,
+                item.quantity,
+                item.sale_price,
+                item.price_modified,
+                item.price_modified_by
+            );
+        }
+        return saleId;
+    });
+
+    return createSaleTransaction(sale);
 }

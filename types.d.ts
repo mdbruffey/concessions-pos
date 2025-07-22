@@ -34,6 +34,7 @@ type SaleItem = {
     sale_id?: number;
     product_id: number | null;
     combo_id: number | null;
+    quantity: number;
     sale_price: number;
     price_modified: boolean;
     price_modified_by: number | null;
@@ -78,7 +79,7 @@ type EventPayloadMapping = {
     };
     createSale: {
         request: Sale;
-        response: boolean;
+        response: number;
     };
 };
 
@@ -88,7 +89,7 @@ interface Window {
         getCombos: () => Promise<Combo[]>;
         authenticatePIN: (pin: number) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
-        createSale: (sale: Sale) => Promise<boolean>;
+        createSale: (sale: Sale) => Promise<number>;
         endSession: (user: User) => Promise<Session>;
     };
 }
