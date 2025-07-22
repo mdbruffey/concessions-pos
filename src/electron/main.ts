@@ -8,6 +8,7 @@ import {
     authenticatePIN,
     startSession,
     endSession,
+    createSale
 } from "./controllers.js";
 
 const db = database;
