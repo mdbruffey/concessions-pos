@@ -3,13 +3,14 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     first_name TEXT,
     last_name TEXT,
-    pin INTEGER
+    pin TEXT
 );
 
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     type TEXT,
+    combo_option_type TEXT CHECK(combo_option_type in ('','main', 'chips', 'drink')),
     default_price REAL NOT NULL,
     image_path TEXT
 );
@@ -17,6 +18,8 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS combos (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
+    main_item_type TEXT,
+    main_item_quantity REAL,
     default_price REAL NOT NULL
 );
 
@@ -50,6 +53,14 @@ CREATE TABLE IF NOT EXISTS sale_items (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (combo_id) REFERENCES combos(id),
     FOREIGN KEY (price_modified_by) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS combo_selections (
+    id INTEGER PRIMARY KEY,
+    sale_item_id REFERENCES sale_items(id),
+    product_id REFERENCES producs(id),
+    option_type TEXT CHECK(option_type in ('main', 'chips', 'drink')),
+    quantity REAL
 );
 
 CREATE TABLE IF NOT EXISTS sessions (

@@ -18,8 +18,8 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
-export function authenticatePIN(pin: number): User | undefined {
-    const stmt = db.prepare<number, User>("SELECT * FROM users WHERE pin = ?");
+export function authenticatePIN(pin: string): User | undefined {
+    const stmt = db.prepare<string, User>("SELECT * FROM users WHERE pin = ?");
     const user = stmt.get(pin);
     return user;
 }

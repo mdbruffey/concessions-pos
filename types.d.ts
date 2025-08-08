@@ -3,7 +3,7 @@ type User = {
     username: string;
     first_name: string;
     last_name: string;
-    pin: number;
+    pin: string;
 };
 
 type Product = {
@@ -66,7 +66,7 @@ type EventPayloadMapping = {
         response: Combo[];
     };
     authenticatePIN: {
-        request: number;
+        request: string;
         response: User | undefined;
     };
     startSession: {
@@ -87,7 +87,7 @@ interface Window {
     electron: {
         getProducts: () => Promise<Product[]>;
         getCombos: () => Promise<Combo[]>;
-        authenticatePIN: (pin: number) => Promise<User | undefined>;
+        authenticatePIN: (pin: string) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
         createSale: (sale: Sale) => Promise<number>;
         endSession: (user: User) => Promise<Session>;
