@@ -80,13 +80,13 @@ export function endSession(user: User): Session {
 export function startShift(user: User): Shift {
     const startTime = new Date();
     const getSession = db.prepare<[], number>(
-        "SELECT * from sessions WHERE end IS NULL RETURNING id"
+        "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
     if (!currentSessionId) throw new Error("No active session.");
     
     const getCurrentShift = db.prepare<[number, number], Shift>(
-        "SELECT * FROM shifts WHERE session_id = ? AND user_id = ? AND end IS NULL RETURNING *"
+        "SELECT * FROM shifts WHERE session_id = ? AND user_id = ? AND end IS NULL"
     );
     const currentShift = getCurrentShift.get(currentSessionId, user.id);
     if (currentShift) return currentShift;
@@ -106,7 +106,7 @@ export function startShift(user: User): Shift {
 export function endShift(user: User): Shift {
     const endTime = new Date();
     const getSession = db.prepare<[], number>(
-        "SELECT * from sessions WHERE end IS NULL RETURNING id"
+        "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
     if (!currentSessionId) throw new Error("No active session.");
