@@ -118,9 +118,9 @@ export function endShift(user: User): Shift {
 }
 
 export function createSale(sale: Sale): number {
-    const insertSaleStmt = db.prepare("INSERT INTO sales VALUES(?,?,?)");
+    const insertSaleStmt = db.prepare("INSERT INTO sales (total, user_id, time) VALUES(?,?,?)");
     const insertSaleItemStmt = db.prepare(
-        "INSERT INTO sale_items VALUES(?,?,?,?,?,?,?)"
+        "INSERT INTO sale_items VALUES(NULL,?,?,?,?,?,?,?)"
     );
 
     const createSaleTransaction = db.transaction((sale: Sale) => {
@@ -133,7 +133,7 @@ export function createSale(sale: Sale): number {
                 item.combo_id,
                 item.quantity,
                 item.sale_price,
-                item.price_modified,
+                item.price_modified ? 1 : 0,
                 item.price_modified_by
             );
         }
