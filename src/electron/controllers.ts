@@ -79,7 +79,7 @@ export function endSession(user: User): Session {
 
 export function startShift(user: User): Shift {
     const startTime = new Date();
-    const getSession = db.prepare<[], number>(
+    const getSession = db.prepare<[], {id: number}>(
         "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
@@ -88,7 +88,7 @@ export function startShift(user: User): Shift {
     const getCurrentShift = db.prepare<[number, number], Shift>(
         "SELECT * FROM shifts WHERE session_id = ? AND user_id = ? AND end IS NULL"
     );
-    const currentShift = getCurrentShift.get(currentSessionId, user.id);
+    const currentShift = getCurrentShift.get(currentSessionId.id, user.id);
     if (currentShift) return currentShift;
 
     const insertShift = db.prepare<[number, number, string], Shift>(
@@ -96,7 +96,7 @@ export function startShift(user: User): Shift {
     );
     const newShift = insertShift.get(
         user.id,
-        currentSessionId,
+        currentSessionId.id,
         startTime.toDateString()
     );
     if (!newShift) throw new Error("Failed to create new shift.");
@@ -105,7 +105,7 @@ export function startShift(user: User): Shift {
 
 export function endShift(user: User): Shift {
     const endTime = new Date();
-    const getSession = db.prepare<[], number>(
+    const getSession = db.prepare<[], {id: number}>(
         "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
@@ -116,7 +116,7 @@ export function endShift(user: User): Shift {
     );
     const endedShift = setCurrentShiftEnd.get(
         endTime.toDateString(),
-        currentSessionId,
+        currentSessionId.id,
         user.id
     );
     if (!endedShift) throw new Error("No active shift...");
