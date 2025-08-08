@@ -34,7 +34,7 @@ if (!dbExists) {
     insertManyCombos(combos);
 
     const insertUser = db.prepare(
-        "INSERT INTO users (name, first_name, last_name, pin) VALUES(@name, @first_name, @last_name, @pin)"
+        "INSERT INTO users (username, first_name, last_name, pin) VALUES(@username, @first_name, @last_name, @pin)"
     );
     const insertManyUsers = db.transaction((users) => {
         for (const user of users) insertUser.run(user);
