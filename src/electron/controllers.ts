@@ -1,7 +1,7 @@
 import db from "./database/db.js";
 
 export function getProducts(): Product[] {
-    const allProducts = db.prepare<[],Product>("SELECT * from products");
+    const allProducts = db.prepare<[], Product>("SELECT * from products");
     const products = allProducts.all();
     if (products.length === 0) {
         const entry = db.prepare(
@@ -50,7 +50,7 @@ export function startSession(request: StartSessionRequest): Session {
         request.user.id,
         request.description
     );
-    if(!newSession){
+    if (!newSession) {
         throw new Error("Failed to create a session");
     }
     return newSession;
@@ -77,6 +77,52 @@ export function endSession(user: User): Session {
     return currentSession;
 }
 
+export function startShift(user: User): Shift {
+    const startTime = new Date();
+    const getSession = db.prepare<[], number>(
+        "SELECT * from sessions WHERE end IS NULL RETURNING id"
+    );
+    const currentSessionId = getSession.get();
+    if (!currentSessionId) throw new Error("No active session.");
+    
+    const getCurrentShift = db.prepare<[number, number], Shift>(
+        "SELECT * FROM shifts WHERE session_id = ? AND user_id = ? AND end IS NULL RETURNING *"
+    );
+    const currentShift = getCurrentShift.get(currentSessionId, user.id);
+    if (currentShift) return currentShift;
+
+    const insertShift = db.prepare<[number, number, string], Shift>(
+        "INSERT INTO shifts (user_id, session_id, start) VALUES(?,?,?) RETURNING *"
+    );
+    const newShift = insertShift.get(
+        user.id,
+        currentSessionId,
+        startTime.toDateString()
+    );
+    if (!newShift) throw new Error("Failed to create new shift.");
+    return newShift;
+}
+
+export function endShift(user: User): Shift {
+    const endTime = new Date();
+    const getSession = db.prepare<[], number>(
+        "SELECT * from sessions WHERE end IS NULL RETURNING id"
+    );
+    const currentSessionId = getSession.get();
+    if (!currentSessionId) throw new Error("No active session.");
+
+    const setCurrentShiftEnd = db.prepare<[string, number, number], Shift>(
+        "UPDATE shifts SET end = ? WHERE session_id = ? and user_id = ? and end IS NULL RETURNING *"
+    );
+    const endedShift = setCurrentShiftEnd.get(
+        endTime.toDateString(),
+        currentSessionId,
+        user.id
+    );
+    if (!endedShift) throw new Error("No active shift...");
+    return endedShift;
+}
+
 export function createSale(sale: Sale): number {
     const insertSaleStmt = db.prepare("INSERT INTO sales VALUES(?,?,?)");
     const insertSaleItemStmt = db.prepare(
@@ -84,11 +130,7 @@ export function createSale(sale: Sale): number {
     );
 
     const createSaleTransaction = db.transaction((sale: Sale) => {
-        const result = insertSaleStmt.run(
-            sale.total,
-            sale.user_id,
-            sale.time
-        );
+        const result = insertSaleStmt.run(sale.total, sale.user_id, sale.time);
         const saleId = result.lastInsertRowid as number;
         for (let item of sale.items) {
             insertSaleItemStmt.run(

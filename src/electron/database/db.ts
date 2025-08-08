@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import type { Database as Sqlite3Database } from "better-sqlite3";
 import { getDbPath } from "../utils.js";
-import { products, combos } from "./seedData.js";
+import { products, combos, users } from "./seedData.js";
 
 const dbPath = getDbPath();
 const dbExists = fs.existsSync(dbPath);
@@ -32,6 +32,14 @@ if (!dbExists) {
         for (const combo of combos) insertCombo.run(combo);
     });
     insertManyCombos(combos);
+
+    const insertUser = db.prepare(
+        "INSERT INTO users (name, first_name, last_name, pin) VALUES(@name, @first_name, @last_name, @pin)"
+    );
+    const insertManyUsers = db.transaction((users) => {
+        for (const user of users) insertUser.run(user);
+    });
+    insertManyUsers(users);
 }
 const test = db.prepare("SELECT * FROM products");
 const test_results = test.all();

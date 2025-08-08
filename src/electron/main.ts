@@ -8,6 +8,8 @@ import {
     authenticatePIN,
     startSession,
     endSession,
+    startShift,
+    endShift,
     createSale
 } from "./controllers.js";
 
@@ -32,6 +34,8 @@ app.on("ready", () => {
     ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
     ipcMainHandle("startSession", (_, request) => startSession(request));
     ipcMainHandle("endSession", (_, user) => endSession(user));
+    ipcMainHandle("startShift", (_, user) => startShift(user));
+    ipcMainHandle("endShift", (_, user) => endShift(user));
     ipcMainHandle("createSale", (_, sale) => createSale(sale));
 });
 

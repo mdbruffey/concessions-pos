@@ -50,6 +50,14 @@ type Session = {
     sales: Sale[];
 };
 
+type Shift = {
+    id?: number;
+    user_id: number;
+    session_id: number;
+    start: string;
+    end: string | null;
+}
+
 /**Request object for starting a new session */
 type StartSessionRequest = {
     user: User;
@@ -77,6 +85,14 @@ type EventPayloadMapping = {
         request: User;
         response: Session;
     };
+    startShift: {
+        request: User;
+        response: Shift;
+    }
+    endShift: {
+        request: User;
+        response: Shift;
+    }
     createSale: {
         request: Sale;
         response: number;
@@ -89,7 +105,9 @@ interface Window {
         getCombos: () => Promise<Combo[]>;
         authenticatePIN: (pin: string) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
-        createSale: (sale: Sale) => Promise<number>;
         endSession: (user: User) => Promise<Session>;
+        startShift: (user: User) => Promise<Shift>;
+        endShift: (user: User) => Promise<Shift>;
+        createSale: (sale: Sale) => Promise<number>;
     };
 }
