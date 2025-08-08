@@ -46,7 +46,7 @@ export function startSession(request: StartSessionRequest): Session {
         "INSERT INTO sessions (start, started_by, description) VALUES (?,?,?) RETURNING *"
     );
     const newSession = insertNewSession.get(
-        startTime.toDateString(),
+        startTime.toISOString(),
         request.user.id,
         request.description
     );
@@ -68,7 +68,7 @@ export function endSession(user: User): Session {
         "UPDATE sessions SET end = ?, ended_by = ? where end IS NULL RETURNING *"
     );
     const currentSession = setCurrentSessionEnd.get(
-        endTime.toDateString(),
+        endTime.toISOString(),
         user.id
     );
     if (!currentSession) {
@@ -84,7 +84,7 @@ export function startShift(user: User): Shift {
     );
     const currentSessionId = getSession.get();
     if (!currentSessionId) throw new Error("No active session.");
-    
+
     const getCurrentShift = db.prepare<[number, number], Shift>(
         "SELECT * FROM shifts WHERE session_id = ? AND user_id = ? AND end IS NULL"
     );
@@ -97,7 +97,7 @@ export function startShift(user: User): Shift {
     const newShift = insertShift.get(
         user.id,
         currentSessionId.id,
-        startTime.toDateString()
+        startTime.toISOString()
     );
     if (!newShift) throw new Error("Failed to create new shift.");
     return newShift;
@@ -115,7 +115,7 @@ export function endShift(user: User): Shift {
         "UPDATE shifts SET end = ? WHERE session_id = ? and user_id = ? and end IS NULL RETURNING *"
     );
     const endedShift = setCurrentShiftEnd.get(
-        endTime.toDateString(),
+        endTime.toISOString(),
         currentSessionId.id,
         user.id
     );
