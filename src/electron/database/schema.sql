@@ -23,15 +23,6 @@ CREATE TABLE IF NOT EXISTS combos (
     default_price REAL NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS combo_items (
-    combo_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 1,
-    PRIMARY KEY (combo_id, product_id),
-    FOREIGN KEY (combo_id) REFERENCES combos(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
-
 CREATE TABLE IF NOT EXISTS sales (
     id INTEGER PRIMARY KEY,
     total REAL NOT NULL,
@@ -58,7 +49,7 @@ CREATE TABLE IF NOT EXISTS sale_items (
 CREATE TABLE IF NOT EXISTS combo_selections (
     id INTEGER PRIMARY KEY,
     sale_item_id REFERENCES sale_items(id),
-    product_id REFERENCES producs(id),
+    product_id REFERENCES products(id),
     option_type TEXT CHECK(option_type in ('main', 'chips', 'drink')),
     quantity REAL
 );

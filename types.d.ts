@@ -38,7 +38,14 @@ type SaleItem = {
     sale_price: number;
     price_modified: boolean;
     price_modified_by: number | null;
+    combo_items: ComboItem[]
 };
+
+type ComboItem = {
+    product_id: number;
+    option_type: string;
+    quantity: number;
+}
 
 type Session = {
     id?: number;

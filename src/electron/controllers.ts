@@ -73,7 +73,7 @@ export function endSession(user: User): Session {
 
 export function startShift(user: User): Shift {
     const startTime = new Date();
-    const getSession = db.prepare<[], {id: number}>(
+    const getSession = db.prepare<[], { id: number }>(
         "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
@@ -99,7 +99,7 @@ export function startShift(user: User): Shift {
 
 export function endShift(user: User): Shift {
     const endTime = new Date();
-    const getSession = db.prepare<[], {id: number}>(
+    const getSession = db.prepare<[], { id: number }>(
         "SELECT id from sessions WHERE end IS NULL"
     );
     const currentSessionId = getSession.get();
@@ -118,16 +118,21 @@ export function endShift(user: User): Shift {
 }
 
 export function createSale(sale: Sale): number {
-    const insertSaleStmt = db.prepare("INSERT INTO sales (total, user_id, time) VALUES(?,?,?)");
+    const insertSaleStmt = db.prepare(
+        "INSERT INTO sales (total, user_id, time) VALUES(?,?,?)"
+    );
+    const insertComboSelectionStmt = db.prepare(
+        "INSERT INTO combo_selections (sale_item_id, product_id, option_type, quantity) VALUES(?,?,?,?)"
+    );
     const insertSaleItemStmt = db.prepare(
-        "INSERT INTO sale_items VALUES(NULL,?,?,?,?,?,?,?)"
+        "INSERT INTO sale_items VALUES(NULL,?,?,?,?,?,?,?) RETURNING id"
     );
 
     const createSaleTransaction = db.transaction((sale: Sale) => {
         const result = insertSaleStmt.run(sale.total, sale.user_id, sale.time);
         const saleId = result.lastInsertRowid as number;
         for (let item of sale.items) {
-            insertSaleItemStmt.run(
+            const sale_item_id = insertSaleItemStmt.run(
                 saleId,
                 item.product_id,
                 item.combo_id,
@@ -135,7 +140,17 @@ export function createSale(sale: Sale): number {
                 item.sale_price,
                 item.price_modified ? 1 : 0,
                 item.price_modified_by
-            );
+            ).lastInsertRowid as number;
+            if (item.combo_items.length) {
+                for (let i of item.combo_items) {
+                    insertComboSelectionStmt.run(
+                        sale_item_id,
+                        i.product_id,
+                        i.option_type,
+                        i.quantity
+                    );
+                }
+            }
         }
         return saleId;
     });
