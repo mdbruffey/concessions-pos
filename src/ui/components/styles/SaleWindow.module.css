@@ -1,0 +1,19 @@
+.saleWindow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid green;
+    height: 100%;
+}
+
+.saleItems {
+    display: flex;
+}
+
+.rightContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid blue;
+    width: 25%;
+}

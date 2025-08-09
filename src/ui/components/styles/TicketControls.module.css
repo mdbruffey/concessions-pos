@@ -1,0 +1,5 @@
+.controlContainer {
+    display: flex;
+    height: 30%;
+    border: 1px solid orange;
+}
