@@ -10,7 +10,7 @@ import {
     endSession,
     startShift,
     endShift,
-    createSale
+    createSale,
 } from "./controllers.js";
 
 const db = database;
@@ -40,6 +40,23 @@ app.on("ready", () => {
 });
 
 app.on("before-quit", () => {
+    const getActiveShifts = db.prepare<[], Shift>("SELECT * FROM shifts WHERE end IS NULL");
+    const activeShifts = getActiveShifts.all();
+    for (let shift of activeShifts){
+        const getUser = db.prepare<[number], User>("SELECT * FROM users where id = ?");
+        const user = getUser.get(shift.user_id);
+        if(!user) throw new Error("Somehow there is an active shift for a non-existing user????");
+        endShift(user);
+    }
+
+    const getActiveSession = db.prepare<[], Session>("SELECT * FROM sessions WHERE end IS NULL");
+    const activeSession = getActiveSession.get();
+    if(activeSession){
+        const getUser = db.prepare<[number], User>("SELECT * FROM users where id = ?");
+        const user = getUser.get(activeShifts[0].user_id);
+        if(!user) throw new Error("No user available to end session??")
+        endSession(user);
+    }
     try {
         db.close();
         console.log("Database closed.");
