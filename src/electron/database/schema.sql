@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS combos (
 CREATE TABLE IF NOT EXISTS sales (
     id INTEGER PRIMARY KEY,
     total REAL NOT NULL,
-    payment_type TEXT CHECK(payment_type in("cash", "card", "tab")),
+    payment_type TEXT CHECK(payment_type in('cash', 'card', 'tab')),
     user_id INTEGER NOT NULL,
     time TEXT NOT NULL, --timestamp
     FOREIGN KEY (user_id) REFERENCES users(id)
