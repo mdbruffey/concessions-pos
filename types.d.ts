@@ -24,7 +24,7 @@ type Combo = {
 type Sale = {
     id?: number;
     total: number;
-    payment_type: "cash" | "card" | "tab";
+    payment_type?: "cash" | "card" | "tab";
     user_id: number;
     time: string;
     items: SaleItem[];
