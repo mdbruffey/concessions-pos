@@ -9,6 +9,7 @@ export default function SaleWindow() {
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
+    const [activeItemIndex, setActiveItem] = useState<number | null>(null)
 
     useEffect(() => {
         window.electron
@@ -29,17 +30,18 @@ export default function SaleWindow() {
             });
     }, []);
 
-    const productButtons = products.map((p) => (
+    const productButtons = products.map((p, i) => (
         <ItemButton
             item={p}
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
             }}
+            key={i}
         />
     ));
-    const comboButtons = combos.map((c) => (
-        <ItemButton item={c} onClick={() => {}} />
+    const comboButtons = combos.map((c, i) => (
+        <ItemButton item={c} onClick={() => {}} key={i}/>
     ));
 
     const addProduct = (product: Product) => {
@@ -79,7 +81,11 @@ export default function SaleWindow() {
                 {productButtons}
             </div>
             <div className={styles.rightContainer}>
-                <TicketDisplay sale={sale} products={products} />
+                <TicketDisplay 
+                    sale={sale} 
+                    products={products} 
+                    activeItemIndex={activeItemIndex}
+                    setActiveItem={setActiveItem}/>
                 <TicketControls />
             </div>
         </div>

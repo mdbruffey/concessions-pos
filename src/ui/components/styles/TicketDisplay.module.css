@@ -1,4 +1,4 @@
-.ticketContainer{
+.ticketContainer {
     display: flex;
     flex-direction: column;
     height: 70%;
@@ -6,7 +6,20 @@
     padding: 10px;
 }
 
+.itemList{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 5px;
+    overflow: auto;
+}
+
 .saleItem {
     display: flex;
     justify-content: space-between;
+    padding: 2px;
+}
+
+div.active {
+    border: 1px solid blue;
 }
