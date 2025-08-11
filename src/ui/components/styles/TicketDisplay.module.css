@@ -3,4 +3,10 @@
     flex-direction: column;
     height: 70%;
     border-bottom: 2px solid black;
+    padding: 10px;
+}
+
+.saleItem {
+    display: flex;
+    justify-content: space-between;
 }
