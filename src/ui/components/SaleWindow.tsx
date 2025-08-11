@@ -86,7 +86,12 @@ export default function SaleWindow() {
                     products={products} 
                     activeItemIndex={activeItemIndex}
                     setActiveItem={setActiveItem}/>
-                <TicketControls />
+                <TicketControls 
+                    sale={sale}
+                    setSale={setSale}
+                    activeItemIndex={activeItemIndex}
+                    setActiveItem={setActiveItem}
+                />
             </div>
         </div>
     );
