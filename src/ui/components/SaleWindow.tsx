@@ -75,7 +75,9 @@ export default function SaleWindow() {
     };
 
     return (
-        <div className={styles.saleWindow}>
+        <div 
+            className={styles.saleWindow}
+            onClick={() => setActiveItem(null)}>
             <div className={styles.saleItems}>
                 {comboButtons}
                 {productButtons}

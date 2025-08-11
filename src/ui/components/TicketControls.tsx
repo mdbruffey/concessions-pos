@@ -49,6 +49,7 @@ export default function TicketControls({
                 className={itemButtonClassName + styles.decrement}
                 onClick={(e) => {
                     e.currentTarget.blur();
+                    e.stopPropagation();
                     if (activeItemIndex !== null) {
                         decrementItem(activeItemIndex);
                     }
@@ -60,6 +61,7 @@ export default function TicketControls({
                 className={itemButtonClassName + styles.increment}
                 onClick={(e) => {
                     e.currentTarget.blur();
+                    e.stopPropagation();
                     if (activeItemIndex !== null) {
                         incrementItem(activeItemIndex);
                     }
