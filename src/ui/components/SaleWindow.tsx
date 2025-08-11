@@ -5,7 +5,7 @@ import TicketDisplay from "./TicketDisplay";
 import ItemButton from "./ItemButton";
 
 export default function SaleWindow() {
-    const emptySale: Sale = {total: 0, user_id: 0, time: "", items: []}
+    const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale | null>(null);
@@ -29,13 +29,14 @@ export default function SaleWindow() {
             });
     }, []);
 
-    const productButtons = products.map((p) => <ItemButton product={p} />);
+    const productButtons = products.map((p) => <ItemButton item={p} />);
+    const comboButtons = combos.map((c) => <ItemButton item={c} />);
 
     return (
         <div className={styles.saleWindow}>
-            <div className={styles.saleItems}>{productButtons}</div>
+            <div className={styles.saleItems}>{comboButtons}{productButtons}</div>
             <div className={styles.rightContainer}>
-                <TicketDisplay sale={sale} products={products}/>
+                <TicketDisplay sale={sale} products={products} />
                 <TicketControls />
             </div>
         </div>
