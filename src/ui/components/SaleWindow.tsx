@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./styles/SaleWindow.module.css";
 import TicketControls from "./TicketControls";
 import TicketDisplay from "./TicketDisplay";
-import ItemButton from "./ItemButton";
+import POSButton from "./POSButton";
 
 export default function SaleWindow() {
     const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
@@ -31,8 +31,8 @@ export default function SaleWindow() {
     }, []);
 
     const productButtons = products.map((p, i) => (
-        <ItemButton
-            item={p}
+        <POSButton
+            label={p.name}
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
@@ -41,7 +41,7 @@ export default function SaleWindow() {
         />
     ));
     const comboButtons = combos.map((c, i) => (
-        <ItemButton item={c} onClick={() => {}} key={i}/>
+        <POSButton label={c.name} onClick={() => {}} key={i}/>
     ));
 
     const addProduct = (product: Product) => {
