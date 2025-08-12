@@ -17,6 +17,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    user-select: none;
 }
 
 a {
@@ -49,7 +50,7 @@ button {
     font-family: inherit;
     background-color: #1a1a1a;
     cursor: pointer;
-    transition: border-color 0.25s;
+    transition: border-color 0.125s;
     user-select: none;
     touch-action: manipulation;
 }
@@ -61,6 +62,11 @@ button:focus-visible {
 button.pressed {
     border-color: #580c02;
     transform: scale(.96);
+}
+
+button.disabled {
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 @media (prefers-color-scheme: light) {

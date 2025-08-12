@@ -1,4 +1,5 @@
 import styles from "./styles/TicketControls.module.css";
+import POSButton from "./POSButton";
 
 type TicketControlsProps = {
     sale: Sale;
@@ -13,8 +14,7 @@ export default function TicketControls({
     activeItemIndex,
     setActiveItem,
 }: TicketControlsProps) {
-    const itemButtonClassName =
-        activeItemIndex !== null ? "" : styles.disabled + " ";
+    const itemButtonClassName = activeItemIndex !== null ? "" : "disabled ";
 
     const decrementItem = (index: number) => {
         const saleItem = { ...sale.items[index] };
@@ -45,34 +45,36 @@ export default function TicketControls({
     };
     return (
         <div className={styles.controlContainer}>
-            <button
+            <POSButton
                 className={itemButtonClassName + styles.decrement}
-                onClick={(e) => {
-                    e.currentTarget.blur();
-                    e.stopPropagation();
+                label="-"
+                onClick={() => {
                     if (activeItemIndex !== null) {
                         decrementItem(activeItemIndex);
                     }
                 }}
-            >
-                -
-            </button>
-            <button
+            />
+            <POSButton
                 className={itemButtonClassName + styles.increment}
-                onClick={(e) => {
-                    e.currentTarget.blur();
-                    e.stopPropagation();
+                label="+"
+                onClick={() => {
                     if (activeItemIndex !== null) {
                         incrementItem(activeItemIndex);
                     }
                 }}
-            >
-                +
-            </button>
-            <button className={itemButtonClassName + styles.modify}>
-                Modify
-            </button>
-            <button className={styles.checkout}>Checkout</button>
+            />
+            <POSButton
+                className={itemButtonClassName + styles.modify}
+                label="Modify"
+                onClick={() => {
+                    return;
+                }}
+            />
+            <POSButton
+                className={styles.checkout}
+                label="Checkout"
+                onClick={() => {return}}
+            />
         </div>
     );
 }

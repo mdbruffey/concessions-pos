@@ -9,7 +9,7 @@ export default function SaleWindow() {
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
-    const [activeItemIndex, setActiveItem] = useState<number | null>(null)
+    const [activeItemIndex, setActiveItem] = useState<number | null>(null);
 
     useEffect(() => {
         window.electron
@@ -41,7 +41,7 @@ export default function SaleWindow() {
         />
     ));
     const comboButtons = combos.map((c, i) => (
-        <POSButton label={c.name} onClick={() => {}} key={i}/>
+        <POSButton label={c.name} onClick={() => {}} key={i} />
     ));
 
     const addProduct = (product: Product) => {
@@ -75,20 +75,19 @@ export default function SaleWindow() {
     };
 
     return (
-        <div 
-            className={styles.saleWindow}
-            onClick={() => setActiveItem(null)}>
+        <div className={styles.saleWindow} onClick={() => setActiveItem(null)}>
             <div className={styles.saleItems}>
                 {comboButtons}
                 {productButtons}
             </div>
             <div className={styles.rightContainer}>
-                <TicketDisplay 
-                    sale={sale} 
-                    products={products} 
+                <TicketDisplay
+                    sale={sale}
+                    products={products}
                     activeItemIndex={activeItemIndex}
-                    setActiveItem={setActiveItem}/>
-                <TicketControls 
+                    setActiveItem={setActiveItem}
+                />
+                <TicketControls
                     sale={sale}
                     setSale={setSale}
                     activeItemIndex={activeItemIndex}

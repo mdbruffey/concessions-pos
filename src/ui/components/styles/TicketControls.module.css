@@ -17,12 +17,19 @@
     grid-row: 1;
 }
 
-.checkout {
-    grid-column: 2 / 4;
-    grid-row: 2;
+.modify {
+    grid-column: 3;
+    grid-row: 1;
 }
 
-button.disabled {
-    opacity: 0.6;
-    pointer-events: none;
+.controlContainer>button {
+    width: auto;
+    height: auto;
+    font-size: 1rem;
+}
+
+.controlContainer>button.checkout {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    font-size: 1.5rem;
 }
