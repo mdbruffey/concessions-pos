@@ -1,5 +1,6 @@
 import styles from "./styles/TicketControls.module.css";
 import POSButton from "./POSButton";
+import { emptySale } from "./SaleWindow";
 
 type TicketControlsProps = {
     sale: Sale;
@@ -43,6 +44,15 @@ export default function TicketControls({
             return { ...prev, items: items };
         });
     };
+
+    const clearTicket = (element: EventTarget & HTMLButtonElement) => {
+    console.log(element);
+        setSale(emptySale);
+        element.classList.remove(styles.pressed);
+    };
+    //I'm not sure what type to use here. It apparently it a number
+    //but the function claims to return a NodeJS.Timeout
+    let clearTimerID: any;
     return (
         <div className={styles.controlContainer}>
             <POSButton
@@ -70,10 +80,30 @@ export default function TicketControls({
                     return;
                 }}
             />
+            <button
+                className={styles.clear}
+                onPointerDown={(e) => {
+                    e.currentTarget.classList.add(styles.pressed);
+                    const currentTarget = e.currentTarget;
+                    clearTimerID = setTimeout(() => clearTicket(currentTarget), 1200);
+                }}
+                onPointerUp={(e) => {
+                    e.currentTarget.classList.remove(styles.pressed);
+                    clearTimeout(clearTimerID);
+                }}
+                onPointerLeave={(e) => {
+                    e.currentTarget.classList.remove(styles.pressed);
+                    clearTimeout(clearTimerID);
+                }}
+            >
+                Clear Ticket
+            </button>
             <POSButton
                 className={styles.checkout}
                 label="Checkout"
-                onClick={() => {return}}
+                onClick={() => {
+                    return;
+                }}
             />
         </div>
     );

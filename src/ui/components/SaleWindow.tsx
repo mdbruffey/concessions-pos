@@ -4,8 +4,9 @@ import TicketControls from "./TicketControls";
 import TicketDisplay from "./TicketDisplay";
 import POSButton from "./POSButton";
 
+export const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
+
 export default function SaleWindow() {
-    const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
