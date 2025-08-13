@@ -43,7 +43,7 @@
 
 .clear.pressed:before {
     height: 100%;
-    transition: height 1.2s linear;
+    transition: height .5s linear;
 }
 
 .controlContainer>button {

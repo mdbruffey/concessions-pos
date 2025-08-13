@@ -84,7 +84,7 @@ export default function TicketControls({
                 onPointerDown={(e) => {
                     e.currentTarget.classList.add(styles.pressed);
                     const currentTarget = e.currentTarget;
-                    clearTimerID = setTimeout(() => clearTicket(currentTarget), 1200);
+                    clearTimerID = setTimeout(() => clearTicket(currentTarget), 500);
                 }}
                 onPointerUp={(e) => {
                     e.currentTarget.classList.remove(styles.pressed);
