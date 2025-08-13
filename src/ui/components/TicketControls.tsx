@@ -80,7 +80,7 @@ export default function TicketControls({
                 }}
             />
             <button
-                className={styles.clear}
+                className={styles.clear + (sale.items.length ? "" : " disabled")}
                 onPointerDown={(e) => {
                     e.currentTarget.classList.add(styles.pressed);
                     const currentTarget = e.currentTarget;
