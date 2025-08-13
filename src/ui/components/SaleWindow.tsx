@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./styles/SaleWindow.module.css";
 import TicketControls from "./TicketControls";
 import TicketDisplay from "./TicketDisplay";
-import POSButton from "./POSButton";
+import SaleItems from "./SaleItems";
 
 export const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
 
@@ -31,56 +31,9 @@ export default function SaleWindow() {
             });
     }, []);
 
-    const productButtons = products.map((p, i) => (
-        <POSButton
-            label={p.name}
-            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
-                addProduct(p);
-                e.currentTarget.blur();
-            }}
-            key={i}
-        />
-    ));
-    const comboButtons = combos.map((c, i) => (
-        <POSButton label={c.name} onClick={() => {}} key={i} />
-    ));
-
-    const addProduct = (product: Product) => {
-        //check if item is already in the sale
-        const matchIndex = sale.items.findIndex(
-            (item) => item.product_id === product.id
-        );
-        //if it is, just increment the quantity (but you have to avoid mutating in place...)
-        if (matchIndex !== -1) {
-            setSale((prev) => {
-                const items = [...prev.items];
-                const matchedItem = { ...items[matchIndex] };
-                matchedItem.quantity += 1;
-                items[matchIndex] = matchedItem;
-                return { ...prev, items };
-            });
-        } else {
-            const saleItem: SaleItem = {
-                product_id: product.id,
-                combo_id: null,
-                quantity: 1,
-                sale_price: product.default_price,
-                price_modified: false,
-                price_modified_by: null,
-                combo_items: [],
-            };
-            setSale((prev) => {
-                return { ...prev, items: [...prev.items, saleItem] };
-            });
-        }
-    };
-
     return (
         <div className={styles.saleWindow} onClick={() => setActiveItem(null)}>
-            <div className={styles.saleItems}>
-                {comboButtons}
-                {productButtons}
-            </div>
+            <SaleItems products={products} combos={combos} sale={sale} setSale={setSale}/>
             <div className={styles.rightContainer}>
                 <TicketDisplay
                     sale={sale}
