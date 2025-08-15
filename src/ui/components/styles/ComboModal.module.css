@@ -10,10 +10,44 @@
 }
 
 .modal {
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
     width: 70%;
     height: 80%;
     border-radius: 20px;
     background-color: rgba(71, 71, 71, 0.9);
     margin-left: 5%;
     padding: 10px;
+}
+
+.selected {
+    border: 2px solid #580c02;
+    pointer-events: none;
+}
+
+.mainItemContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.container > div {
+    display: flex;
+    gap: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
