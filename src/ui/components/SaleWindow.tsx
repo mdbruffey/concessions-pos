@@ -3,6 +3,7 @@ import styles from "./styles/SaleWindow.module.css";
 import TicketControls from "./TicketControls";
 import TicketDisplay from "./TicketDisplay";
 import SaleItems from "./SaleItems";
+import ComboModal from "./ComboModal";
 
 export const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
 
@@ -11,6 +12,10 @@ export default function SaleWindow() {
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
     const [activeItemIndex, setActiveItem] = useState<number | null>(null);
+
+    const [showComboModal, setShowComboModal] = useState<boolean>(false);
+    const [activeCombo, setActiveCombo] = useState<Combo | null>(null);
+    const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
 
     useEffect(() => {
         window.electron
@@ -31,13 +36,36 @@ export default function SaleWindow() {
             });
     }, []);
 
+    const createComboModal = (combo: Combo) => {
+        setActiveCombo(combo);
+        setShowComboModal(true);
+    }
+
     return (
         <div className={styles.saleWindow} onClick={() => setActiveItem(null)}>
-            <SaleItems products={products} combos={combos} sale={sale} setSale={setSale}/>
+            {showComboModal && activeCombo && (
+                <ComboModal
+                    combo={activeCombo}
+                    closeModal={() => {
+                        setShowComboModal(false);
+                        setActiveCombo(null);
+                    }}
+                    products={products}
+                    setSale={setSale}
+                />
+            )}
+            <SaleItems
+                products={products}
+                combos={combos}
+                sale={sale}
+                setSale={setSale}
+                createComboModal={createComboModal}
+            />
             <div className={styles.rightContainer}>
                 <TicketDisplay
                     sale={sale}
                     products={products}
+                    combos={combos}
                     activeItemIndex={activeItemIndex}
                     setActiveItem={setActiveItem}
                 />

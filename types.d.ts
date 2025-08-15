@@ -10,6 +10,7 @@ type Product = {
     id: number;
     name: string;
     type: string;
+    combo_option_type: string;
     default_price: number;
     image_path: string | null;
 };
@@ -17,9 +18,10 @@ type Product = {
 type Combo = {
     id: number;
     name: string;
+    main_item_type: string;
+    main_item_quantity: number;
     default_price: number;
-    items: { product: Product; quantity: number }[];
-};
+}
 
 type Sale = {
     id?: number;

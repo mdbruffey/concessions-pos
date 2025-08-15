@@ -104,6 +104,48 @@ export const products = [
         default_price: 2,
         image_path: "",
     },
+    {
+        name: "Nacho Doritos",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Cool Ranch Doritos",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Fritos",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "BBQ Lays",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Sour Cream & Onion Lays",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Cheetos",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
 ];
 
 export const combos = [

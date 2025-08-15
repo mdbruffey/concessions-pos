@@ -6,6 +6,7 @@ type SaleItemsProps = {
     combos: Combo[];
     sale: Sale;
     setSale: React.Dispatch<React.SetStateAction<Sale>>;
+    createComboModal: (combo: Combo) => void;
 };
 
 export default function SaleItems({
@@ -13,6 +14,7 @@ export default function SaleItems({
     combos,
     sale,
     setSale,
+    createComboModal,
 }: SaleItemsProps) {
     const hotButtons = products.filter((i) => i.type.includes("hot")).map((p, i) => (
         <POSButton
@@ -78,7 +80,7 @@ export default function SaleItems({
     ));
 
     const comboButtons = combos.map((c, i) => (
-        <POSButton label={c.name} onClick={() => {}} key={i} />
+        <POSButton label={c.name} onClick={() => createComboModal(c)} key={i} />
     ));
 
     const addProduct = (product: Product) => {

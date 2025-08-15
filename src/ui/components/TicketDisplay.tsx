@@ -2,6 +2,7 @@ import styles from "./styles/TicketDisplay.module.css";
 
 type TicketDisplayProps = {
     products: Product[];
+    combos: Combo[];
     sale: Sale;
     activeItemIndex: number | null;
     setActiveItem: Function;
@@ -10,6 +11,7 @@ type TicketDisplayProps = {
 export default function TicketDisplay({
     sale,
     products,
+    combos,
     activeItemIndex,
     setActiveItem,
 }: TicketDisplayProps) {
@@ -34,9 +36,9 @@ export default function TicketDisplay({
                             }}
                         >
                             <div>
-                                {products.filter(
-                                        (p) => p.id === item.product_id
-                                    )[0].name
+                                {item.product_id ? 
+                                    products.filter((p) => p.id === item.product_id)[0].name :
+                                    combos.filter((c) => c.id ===item.combo_id)[0].name
                                 }{" "}
                                 x{item.quantity}
                             </div>
