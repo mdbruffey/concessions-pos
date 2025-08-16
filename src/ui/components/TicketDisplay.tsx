@@ -35,16 +35,29 @@ export default function TicketDisplay({
                                 setActiveItem(i);
                             }}
                         >
-                            <div>
-                                {item.product_id ? 
-                                    products.filter((p) => p.id === item.product_id)[0].name :
-                                    combos.filter((c) => c.id ===item.combo_id)[0].name
-                                }{" "}
-                                x{item.quantity}
+                            <div className={styles.header}>
+                                <div>
+                                    {item.product_id ? 
+                                        products.filter((p) => p.id === item.product_id)[0].name :
+                                        combos.filter((c) => c.id ===item.combo_id)[0].name
+                                    }{" "}
+                                    x{item.quantity}
+                                </div>
+                                <div>
+                                    ${(item.sale_price * item.quantity).toFixed(2)}
+                                </div>
                             </div>
-                            <div>
-                                ${(item.sale_price * item.quantity).toFixed(2)}
-                            </div>
+                            {item.combo_id && item.combo_items.map((ci) => {
+                                return (
+                                    <div className={styles.comboItem}>
+                                        {products.filter((p) => p.id === ci.product_id)[0].name
+                                        }{" "}
+                                        x{ci.quantity}
+                                    </div>
+                                )
+                            })
+                            }
+                            
                         </div>
                     );
                 })}
