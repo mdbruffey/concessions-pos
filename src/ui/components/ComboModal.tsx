@@ -4,7 +4,7 @@ import styles from "./styles/ComboModal.module.css";
 
 type ComboModalProps = {
     combo: Combo;
-    editItem?: SaleItem;
+    editItem: SaleItem | null;
     products: Product[];
     setSale: React.Dispatch<React.SetStateAction<Sale>>;
     closeModal: () => void;
@@ -73,6 +73,9 @@ export default function ComboModal({
     );
 
     useEffect(() => {
+        if(editItem){
+            setComboItem(editItem);
+        }
         if (mainItems.length === 1) {
             for (let i = 0; i < combo.main_item_quantity; i++) {
                 addItemToCombo(mainItems[0], i + 1);

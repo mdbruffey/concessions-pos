@@ -15,6 +15,8 @@ export default function SaleWindow() {
 
     const [showComboModal, setShowComboModal] = useState<boolean>(false);
     const [activeCombo, setActiveCombo] = useState<Combo | null>(null);
+    const [editingCombo, setEditingCombo] = useState<SaleItem | null>(null);
+
     const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
 
     useEffect(() => {
@@ -36,7 +38,8 @@ export default function SaleWindow() {
             });
     }, []);
 
-    const createComboModal = (combo: Combo) => {
+    const createComboModal = (combo: Combo, editItem?: SaleItem) => {
+        if(editItem) setEditingCombo(editItem)
         setActiveCombo(combo);
         setShowComboModal(true);
     }
@@ -46,6 +49,7 @@ export default function SaleWindow() {
             {showComboModal && activeCombo && (
                 <ComboModal
                     combo={activeCombo}
+                    editItem={editingCombo}
                     closeModal={() => {
                         setShowComboModal(false);
                         setActiveCombo(null);
@@ -73,7 +77,9 @@ export default function SaleWindow() {
                     sale={sale}
                     setSale={setSale}
                     activeItemIndex={activeItemIndex}
+                    combos={combos}
                     setActiveItem={setActiveItem}
+                    modifyCombo={createComboModal}
                 />
             </div>
         </div>

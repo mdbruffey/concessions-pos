@@ -7,6 +7,8 @@ type TicketControlsProps = {
     setSale: React.Dispatch<React.SetStateAction<Sale>>;
     activeItemIndex: number | null;
     setActiveItem: React.Dispatch<React.SetStateAction<number | null>>;
+    combos: Combo[],
+    modifyCombo: (combo: Combo, editItem?: SaleItem) => void;
 };
 
 export default function TicketControls({
@@ -14,8 +16,14 @@ export default function TicketControls({
     setSale,
     activeItemIndex,
     setActiveItem,
+    combos,
+    modifyCombo
 }: TicketControlsProps) {
     const itemButtonClassName = activeItemIndex !== null ? "" : "disabled ";
+    const modifyButtonClassName =
+        activeItemIndex !== null && sale.items[activeItemIndex].combo_id
+            ? ""
+            : "disabled ";
 
     const decrementItem = (index: number) => {
         const saleItem = { ...sale.items[index] };
@@ -73,18 +81,34 @@ export default function TicketControls({
                 }}
             />
             <POSButton
-                className={itemButtonClassName + styles.modify}
+                className={modifyButtonClassName + styles.modify}
                 label="Modify"
                 onClick={() => {
-                    return;
+                    if (activeItemIndex !== null) {
+                        const comboItem = sale.items[activeItemIndex];
+                        const combo = combos.filter((c) => c.id === comboItem.combo_id)[0]
+                        setSale((prev) => {
+                            const items = sale.items.filter(
+                                (_, i) => i !== activeItemIndex
+                            );
+                            return { ...prev, items: items };
+                        });
+                        setActiveItem(null);
+                        modifyCombo(combo, comboItem);
+                    }
                 }}
             />
             <button
-                className={styles.clear + (sale.items.length ? "" : " disabled")}
+                className={
+                    styles.clear + (sale.items.length ? "" : " disabled")
+                }
                 onPointerDown={(e) => {
                     e.currentTarget.classList.add(styles.pressed);
                     const currentTarget = e.currentTarget;
-                    clearTimerID = setTimeout(() => clearTicket(currentTarget), 500);
+                    clearTimerID = setTimeout(
+                        () => clearTicket(currentTarget),
+                        500
+                    );
                 }}
                 onPointerUp={(e) => {
                     e.currentTarget.classList.remove(styles.pressed);
