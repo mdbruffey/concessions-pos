@@ -9,6 +9,7 @@ type TicketControlsProps = {
     setActiveItem: React.Dispatch<React.SetStateAction<number | null>>;
     combos: Combo[],
     modifyCombo: (combo: Combo, editItem?: SaleItem) => void;
+    setShowCheckoutModal: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 export default function TicketControls({
@@ -17,7 +18,8 @@ export default function TicketControls({
     activeItemIndex,
     setActiveItem,
     combos,
-    modifyCombo
+    modifyCombo,
+    setShowCheckoutModal
 }: TicketControlsProps) {
     const itemButtonClassName = activeItemIndex !== null ? "" : "disabled ";
     const modifyButtonClassName =
@@ -86,7 +88,9 @@ export default function TicketControls({
                 onClick={() => {
                     if (activeItemIndex !== null) {
                         const comboItem = sale.items[activeItemIndex];
-                        const combo = combos.filter((c) => c.id === comboItem.combo_id)[0]
+                        const combo = combos.filter(
+                            (c) => c.id === comboItem.combo_id
+                        )[0];
                         setSale((prev) => {
                             const items = sale.items.filter(
                                 (_, i) => i !== activeItemIndex
@@ -125,7 +129,16 @@ export default function TicketControls({
                 className={styles.checkout}
                 label="Checkout"
                 onClick={() => {
-                    return;
+                    setSale((prev) => {
+                        return {
+                            ...prev,
+                            total: sale.items.reduce(
+                                (count, item) =>
+                                    count + item.sale_price * item.quantity, 0
+                            ),
+                        };
+                    });
+                    setShowCheckoutModal(true);
                 }}
             />
         </div>

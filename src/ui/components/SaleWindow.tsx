@@ -4,10 +4,15 @@ import TicketControls from "./TicketControls";
 import TicketDisplay from "./TicketDisplay";
 import SaleItems from "./SaleItems";
 import ComboModal from "./ComboModal";
+import CheckoutModal from "./CheckoutModal";
 
-export const emptySale: Sale = { total: 0, user_id: 0, time: "", items: [] };
+export const emptySale: Sale = { total: 0, user_id: 1, time: "", items: [] };
 
-export default function SaleWindow() {
+type SaleWindowProps = {
+    users: User[]
+}
+
+export default function SaleWindow({users}: SaleWindowProps) {
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
@@ -58,6 +63,12 @@ export default function SaleWindow() {
                     setSale={setSale}
                 />
             )}
+            {showCheckoutModal && 
+                <CheckoutModal 
+                    sale={sale}
+                    setSale={setSale}
+                    users={users}
+                    setShowCheckoutModal={setShowCheckoutModal}/>}
             <SaleItems
                 products={products}
                 combos={combos}
@@ -80,6 +91,7 @@ export default function SaleWindow() {
                     combos={combos}
                     setActiveItem={setActiveItem}
                     modifyCombo={createComboModal}
+                    setShowCheckoutModal={setShowCheckoutModal}
                 />
             </div>
         </div>
