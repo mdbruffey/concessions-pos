@@ -1,5 +1,7 @@
 import styles from "./styles/MenuBar.module.css"
 import POSButton from "./POSButton"
+import { useState } from "react";
+import ClockModal from "./ClockModal";
 
 type MenuBarProps = {
     users: User[];
@@ -7,7 +9,11 @@ type MenuBarProps = {
 }
 
 export default function MenuBar({users, setUsers}: MenuBarProps){
+    const [showClockModal, setShowClockModal] = useState<boolean>(false)
+
     return <div className={styles.menuBar}>
-        <POSButton label="Clock In/Out" onClick={() => console.log("clock in/out clicked")}/>
+        <POSButton label="Clock In/Out" onClick={() => setShowClockModal(true)}/>
+        {showClockModal && 
+        <ClockModal users={users} setUsers={setUsers}/>}
     </div>
 }
