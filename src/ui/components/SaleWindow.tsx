@@ -101,7 +101,7 @@ export default function SaleWindow({users, session}: SaleWindowProps) {
                     </div>
                 </>
             ) : (
-                <div>You must start a session to make sales.</div>
+                <div className={styles.info}>Clock in and start a session to make sales.</div>
             )}
         </div>
     );
