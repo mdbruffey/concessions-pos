@@ -35,7 +35,9 @@ export default function UserInfoModal({
                                     description: "",
                                 });
                             if(newSession){
-                                setSession(newSession)
+                                setSession(newSession);
+                                await window.electron.startShift(currentUser);
+                                setUsers((prev) => [...prev, currentUser]);
                             }
                         }}
                     />
@@ -47,6 +49,7 @@ export default function UserInfoModal({
                                 await window.electron.endShift(user);
                             }
                             await window.electron.endSession(currentUser);
+                            setUsers([]);
                             setSession(null);
                         }}
                     />
