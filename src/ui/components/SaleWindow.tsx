@@ -10,9 +10,10 @@ export const emptySale: Sale = { total: 0, user_id: 1, time: "", items: [] };
 
 type SaleWindowProps = {
     users: User[]
+    session: Session | null;
 }
 
-export default function SaleWindow({users}: SaleWindowProps) {
+export default function SaleWindow({users, session}: SaleWindowProps) {
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [sale, setSale] = useState<Sale>(emptySale);
@@ -63,37 +64,45 @@ export default function SaleWindow({users}: SaleWindowProps) {
                     setSale={setSale}
                 />
             )}
-            {showCheckoutModal && 
-                <CheckoutModal 
+            {showCheckoutModal && (
+                <CheckoutModal
                     sale={sale}
                     setSale={setSale}
                     users={users}
-                    setShowCheckoutModal={setShowCheckoutModal}/>}
-            <SaleItems
-                products={products}
-                combos={combos}
-                sale={sale}
-                setSale={setSale}
-                createComboModal={createComboModal}
-            />
-            <div className={styles.rightContainer}>
-                <TicketDisplay
-                    sale={sale}
-                    products={products}
-                    combos={combos}
-                    activeItemIndex={activeItemIndex}
-                    setActiveItem={setActiveItem}
-                />
-                <TicketControls
-                    sale={sale}
-                    setSale={setSale}
-                    activeItemIndex={activeItemIndex}
-                    combos={combos}
-                    setActiveItem={setActiveItem}
-                    modifyCombo={createComboModal}
                     setShowCheckoutModal={setShowCheckoutModal}
                 />
-            </div>
+            )}
+            {session ? (
+                <>
+                    <SaleItems
+                        products={products}
+                        combos={combos}
+                        sale={sale}
+                        setSale={setSale}
+                        createComboModal={createComboModal}
+                    />
+                    <div className={styles.rightContainer}>
+                        <TicketDisplay
+                            sale={sale}
+                            products={products}
+                            combos={combos}
+                            activeItemIndex={activeItemIndex}
+                            setActiveItem={setActiveItem}
+                        />
+                        <TicketControls
+                            sale={sale}
+                            setSale={setSale}
+                            activeItemIndex={activeItemIndex}
+                            combos={combos}
+                            setActiveItem={setActiveItem}
+                            modifyCombo={createComboModal}
+                            setShowCheckoutModal={setShowCheckoutModal}
+                        />
+                    </div>
+                </>
+            ) : (
+                <div>You must start a session to make sales.</div>
+            )}
         </div>
     );
 }

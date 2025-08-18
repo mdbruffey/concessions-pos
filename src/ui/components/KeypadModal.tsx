@@ -1,19 +1,22 @@
 import { useState } from "react";
 import POSButton from "./POSButton";
-import styles from "./styles/ClockModal.module.css";
+import styles from "./styles/KeypadModal.module.css";
 
-type ClockModalProps = {
+type KeypadProps = {
     users: User[]
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>
+    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+    setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+    close: () => void;
 }
 
-export default function ClockModal({users}: ClockModalProps){
+export default function KeypadModal({setCurrentUser, close}: KeypadProps){
     const [pin, setPin] = useState<string>("");
     const keysDisabled = pin.length >= 4 ? " disabled" : ""
     return (
         <div className={styles.backdrop}>
             <div className={styles.modal}>
                 <h2>Clock In/Out</h2>
+                <POSButton label="🗙" className={styles.close} onClick={close}/>
                 <input type="password" value={pin} readOnly={true}/>
                 <div className={styles.keypad}>
                     {Array(9)
@@ -49,13 +52,14 @@ export default function ClockModal({users}: ClockModalProps){
                     <POSButton
                         label="Enter"
                         className={pin.length === 4 ? "" : "disabled"}
-                        onClick={async () =>
-                            console.log(
-                                JSON.stringify(
-                                    await window.electron.authenticatePIN(pin)
-                                )
-                            )
-                        }
+                        onClick={async () => {
+                            const user = await window.electron.authenticatePIN(pin)
+                            if(user){
+                                setCurrentUser(user);
+                                close()
+                            }
+                            
+                        }}
                     />
                 </div>
             </div>
