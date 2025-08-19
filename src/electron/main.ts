@@ -5,6 +5,7 @@ import database from "./database/db.js";
 import {
     getProducts,
     getCombos,
+    getUsers,
     authenticatePIN,
     startSession,
     endSession,
@@ -42,6 +43,7 @@ app.on("ready", () => {
 
     ipcMainHandle("getProducts", () => getProducts());
     ipcMainHandle("getCombos", () => getCombos());
+    ipcMainHandle("getUsers", (_, user) => getUsers(user));
     ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
     ipcMainHandle("startSession", (_, request) => startSession(request));
     ipcMainHandle("endSession", (_, user) => endSession(user));

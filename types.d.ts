@@ -85,6 +85,10 @@ type EventPayloadMapping = {
         request: undefined;
         response: Combo[];
     };
+    getUsers: {
+        request: User;
+        response: User[];
+    }
     authenticatePIN: {
         request: string;
         response: User | undefined;
@@ -115,6 +119,7 @@ interface Window {
     electron: {
         getProducts: () => Promise<Product[]>;
         getCombos: () => Promise<Combo[]>;
+        getUsers: (user: User) => Promise<User[]>
         authenticatePIN: (pin: string) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
         endSession: (user: User) => Promise<Session>;

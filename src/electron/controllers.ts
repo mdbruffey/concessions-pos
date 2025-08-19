@@ -12,6 +12,13 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
+export function getUsers(user: User): User[]{
+    if(!(user.id === 1)) return [];
+    const getUsersStmt = db.prepare<[], User>("SELECT * from users");
+    const users = getUsersStmt.all();
+    return users;
+}
+
 export function authenticatePIN(pin: string): User | undefined {
     const stmt = db.prepare<string, User>("SELECT * FROM users WHERE pin = ?");
     const user = stmt.get(pin);

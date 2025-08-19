@@ -3,6 +3,7 @@ import electron from "electron";
 electron.contextBridge.exposeInMainWorld("electron", {
     getProducts: () => ipcInvoke("getProducts"),
     getCombos: () => ipcInvoke("getCombos"),
+    getUsers: (user) => ipcInvoke("getUsers", user),
     authenticatePIN: (pin) => ipcInvoke("authenticatePIN", pin),
     startSession: (request) => ipcInvoke("startSession", request),
     endSession: (user) => ipcInvoke("endSession", user),
