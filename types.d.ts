@@ -76,6 +76,11 @@ type StartSessionRequest = {
     description: string;
 };
 
+type AddDeleteUserRequest = {
+    userObject: User;
+    authenticatingUser: User;
+}
+
 type EventPayloadMapping = {
     getProducts: {
         request: undefined;
@@ -88,6 +93,14 @@ type EventPayloadMapping = {
     getUsers: {
         request: User;
         response: User[];
+    }
+    addUser: {
+        request: AddDeleteUserRequest;
+        response: User | null;
+    }
+    deleteUser: {
+        request: AddDeleteUserRequest;
+        response: User | null;
     }
     authenticatePIN: {
         request: string;
@@ -119,7 +132,9 @@ interface Window {
     electron: {
         getProducts: () => Promise<Product[]>;
         getCombos: () => Promise<Combo[]>;
-        getUsers: (user: User) => Promise<User[]>
+        getUsers: (user: User) => Promise<User[]>;
+        addUser: (request: AddDeleteUserRequest) => Promise<User | null>;
+        deleteUser: (request: AddDeleteUserRequest) => Promise<User | null>;
         authenticatePIN: (pin: string) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
         endSession: (user: User) => Promise<Session>;

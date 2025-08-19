@@ -19,6 +19,32 @@ export function getUsers(user: User): User[]{
     return users;
 }
 
+export function addUser(request: AddDeleteUserRequest): User | null {
+    if (!(request.authenticatingUser.id === 1)) return null;
+    const userObject = request.userObject;
+    const addUserStmt = db.prepare<[string, string, string, string], User>(
+        "INSERT INTO users(username, first_name, last_name, pin) VALUES(?,?,?,?) RETURNING *"
+    );
+    const newUser = addUserStmt.get(
+        userObject.username,
+        userObject.first_name,
+        userObject.last_name,
+        userObject.pin
+    );
+    if (newUser) return newUser;
+    return null;
+}
+
+export function deleteUser(request: AddDeleteUserRequest): User | null {
+    if (!(request.authenticatingUser.id === 1)) return null;
+    const delUserStmt = db.prepare<[number], User>(
+        "DELETE FROM users WHERE id=? RETURNING *"
+    );
+    const deletedUser = delUserStmt.get(request.userObject.id);
+    if (deletedUser) return deletedUser;
+    return null;
+}
+
 export function authenticatePIN(pin: string): User | undefined {
     const stmt = db.prepare<string, User>("SELECT * FROM users WHERE pin = ?");
     const user = stmt.get(pin);

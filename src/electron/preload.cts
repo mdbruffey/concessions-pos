@@ -4,6 +4,8 @@ electron.contextBridge.exposeInMainWorld("electron", {
     getProducts: () => ipcInvoke("getProducts"),
     getCombos: () => ipcInvoke("getCombos"),
     getUsers: (user) => ipcInvoke("getUsers", user),
+    addUser: (request) => ipcInvoke("addUser", request),
+    deleteUser: (request) => ipcInvoke("deleteUser", request),
     authenticatePIN: (pin) => ipcInvoke("authenticatePIN", pin),
     startSession: (request) => ipcInvoke("startSession", request),
     endSession: (user) => ipcInvoke("endSession", user),
