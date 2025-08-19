@@ -33,6 +33,22 @@ export function addUser(request: AddDeleteUserRequest): User | null {
     );
     if (newUser) return newUser;
     return null;
+
+}export function updateUser(request: AddDeleteUserRequest): User | null {
+    if (!(request.authenticatingUser.id === 1)) return null;
+    const userObject = request.userObject;
+    const updateUserStmt = db.prepare<[string, string, string, string, number], User>(
+        "UPDATE users SET username = ?, first_name = ?, last_name = ?, pin = ? WHERE id = ? RETURNING *"
+    );
+    const updatedUser = updateUserStmt.get(
+        userObject.username,
+        userObject.first_name,
+        userObject.last_name,
+        userObject.pin,
+        userObject.id,
+    );
+    if (updatedUser) return updatedUser;
+    return null;
 }
 
 export function deleteUser(request: AddDeleteUserRequest): User | null {
