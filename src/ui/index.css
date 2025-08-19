@@ -34,6 +34,7 @@ body {
     place-items: center;
     min-width: 320px;
     height: 100vh;
+    overflow: hidden;
 }
 
 h1 {
@@ -62,6 +63,10 @@ button:focus-visible {
 button.pressed {
     border-color: #580c02;
     transform: scale(.96);
+}
+button.selected {
+    border-color: #580c02;
+    pointer-events: none;
 }
 
 button.disabled {

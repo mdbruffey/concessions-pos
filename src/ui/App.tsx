@@ -7,6 +7,8 @@ function App() {
     const [users, setUsers] = useState<User[]>([]);
     const [session, setSession] = useState<Session | null>(null);
 
+    const [page, setPage] = useState<Page>("sale");
+
     return (
         <div className={"main_container"}>
             <MenuBar
@@ -14,11 +16,15 @@ function App() {
                 setUsers={setUsers}
                 session={session}
                 setSession={setSession}
+                page={page}
+                setPage={setPage}
             />
-            <SaleWindow
-                users={users}
-                session={session}
-            />
+            {page === "sale" && 
+                <SaleWindow
+                    users={users}
+                    session={session}
+                />
+            }
         </div>
     );
 }

@@ -9,6 +9,8 @@ type MenuBarProps = {
     setUsers: React.Dispatch<React.SetStateAction<User[]>>;
     session: Session | null;
     setSession: React.Dispatch<React.SetStateAction<Session | null>>
+    page: Page;
+    setPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
 export default function MenuBar({
@@ -16,6 +18,8 @@ export default function MenuBar({
     setUsers,
     session,
     setSession,
+    page,
+    setPage
 }: MenuBarProps) {
     const [showKeypadModal, setShowKeypadModal] = useState<boolean>(false);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -46,6 +50,23 @@ export default function MenuBar({
                     setSession={setSession}
                 />
             )}
+            <div className={styles.pageSelect}>
+                <POSButton
+                    label="Sale"
+                    className={page === "sale" ? "selected" : ""}
+                    onClick={() => setPage("sale")}
+                />
+                <POSButton
+                    label="Manage"
+                    className={page === "manage" ? "selected" : ""}
+                    onClick={() => setPage("manage")}
+                />
+                <POSButton
+                    label="Reports"
+                    className={page === "reports" ? "selected" : ""}
+                    onClick={() => setPage("reports")}
+                />
+            </div>
         </div>
     );
 }

@@ -1,3 +1,5 @@
+type Page = "sale" | "manage" | "reports";
+
 type User = {
     id: number;
     username: string;
