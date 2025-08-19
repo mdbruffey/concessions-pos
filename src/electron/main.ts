@@ -4,8 +4,14 @@ import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
 import {
     getProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
     getCombos,
     getUsers,
+    addUser,
+    updateUser,
+    deleteUser,
     authenticatePIN,
     startSession,
     endSession,
@@ -42,8 +48,14 @@ app.on("ready", () => {
     }
 
     ipcMainHandle("getProducts", () => getProducts());
+    ipcMainHandle("addProduct", (_, request) => addProduct(request));
+    ipcMainHandle("updateProduct", (_, request) => updateProduct(request));
+    ipcMainHandle("deleteProduct", (_, request) => deleteProduct(request));
     ipcMainHandle("getCombos", () => getCombos());
     ipcMainHandle("getUsers", (_, user) => getUsers(user));
+    ipcMainHandle("addUser", (_, request) => addUser(request));
+    ipcMainHandle("updateUser", (_, request) => updateUser(request));
+    ipcMainHandle("deleteUser", (_, request) => deleteUser(request));
     ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
     ipcMainHandle("startSession", (_, request) => startSession(request));
     ipcMainHandle("endSession", (_, user) => endSession(user));

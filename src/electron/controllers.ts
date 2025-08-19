@@ -6,6 +6,46 @@ export function getProducts(): Product[] {
     return products;
 }
 
+export function addProduct(request: ProductRequest): Product | null{
+    const product = request.product;
+    const addProductStmt = db.prepare<[string, string, string, number, string | null],Product>(
+        "INSERT INTO products (name, type combo_option_type, default_price, image_path VALUES(?,?,?,?,?) RETURNING *"
+    );
+    const newProduct = addProductStmt.get(
+        product.name,
+        product.type,
+        product.combo_option_type,
+        product.default_price,
+        product.image_path
+    );
+    if(newProduct) return newProduct;
+    return null;
+
+}export function updateProduct(request: ProductRequest): Product | null{
+    const product = request.product;
+    const addProductStmt = db.prepare<[string, string, string, number, string | null],Product>(
+        "UPDATE products SET name = ?, type = ? combo_option_type = ?, default_price = ?, image_path = ? RETURNING *"
+    );
+    const updatedProduct = addProductStmt.get(
+        product.name,
+        product.type,
+        product.combo_option_type,
+        product.default_price,
+        product.image_path
+    );
+    if(updatedProduct) return updatedProduct;
+    return null;
+
+}export function deleteProduct(request: ProductRequest): Product | null{
+    const product = request.product;
+    const deleteProductStmt = db.prepare<[number],Product>(
+        "DELETE FROM products WHERE id = ? RETURNING *"
+    );
+    const newProduct = deleteProductStmt.get(product.id);
+    if(newProduct) return newProduct;
+    return null;
+}
+
 export function getCombos(): Combo[] {
     const stmt = db.prepare<[], Combo>("SELECT * from combos");
     const combos = stmt.all();
@@ -19,7 +59,7 @@ export function getUsers(user: User): User[]{
     return users;
 }
 
-export function addUser(request: AddDeleteUserRequest): User | null {
+export function addUser(request: UserRequest): User | null {
     if (!(request.authenticatingUser.id === 1)) return null;
     const userObject = request.userObject;
     const addUserStmt = db.prepare<[string, string, string, string], User>(
@@ -34,7 +74,7 @@ export function addUser(request: AddDeleteUserRequest): User | null {
     if (newUser) return newUser;
     return null;
 
-}export function updateUser(request: AddDeleteUserRequest): User | null {
+}export function updateUser(request: UserRequest): User | null {
     if (!(request.authenticatingUser.id === 1)) return null;
     const userObject = request.userObject;
     const updateUserStmt = db.prepare<[string, string, string, string, number], User>(
@@ -51,7 +91,7 @@ export function addUser(request: AddDeleteUserRequest): User | null {
     return null;
 }
 
-export function deleteUser(request: AddDeleteUserRequest): User | null {
+export function deleteUser(request: UserRequest): User | null {
     if (!(request.authenticatingUser.id === 1)) return null;
     const delUserStmt = db.prepare<[number], User>(
         "DELETE FROM users WHERE id=? RETURNING *"

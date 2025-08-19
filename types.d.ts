@@ -76,7 +76,17 @@ type StartSessionRequest = {
     description: string;
 };
 
-type AddDeleteUserRequest = {
+type ProductRequest = {
+    product: Product;
+    user: User;
+}
+
+type ComboRequest = {
+    combo: Combo;
+    user: User;
+}
+
+type UserRequest = {
     userObject: User;
     authenticatingUser: User;
 }
@@ -86,6 +96,18 @@ type EventPayloadMapping = {
         request: undefined;
         response: Product[];
     };
+    addProduct: {
+        request: ProductRequest;
+        response: Product | null;
+    };
+    updateProduct: {
+        request: ProductRequest;
+        response: Product | null;
+    };
+    deleteProduct: {
+        request: ProductRequest;
+        response: Product | null;
+    };
     getCombos: {
         request: undefined;
         response: Combo[];
@@ -93,15 +115,19 @@ type EventPayloadMapping = {
     getUsers: {
         request: User;
         response: User[];
-    }
+    };
     addUser: {
-        request: AddDeleteUserRequest;
+        request: UserRequest;
         response: User | null;
-    }
+    };
+    updateUser: {
+        request: UserRequest;
+        response: User | null;
+    };
     deleteUser: {
-        request: AddDeleteUserRequest;
+        request: UserRequest;
         response: User | null;
-    }
+    };
     authenticatePIN: {
         request: string;
         response: User | undefined;
@@ -117,11 +143,11 @@ type EventPayloadMapping = {
     startShift: {
         request: User;
         response: Shift;
-    }
+    };
     endShift: {
         request: User;
         response: Shift;
-    }
+    };
     createSale: {
         request: Sale;
         response: number;
@@ -131,10 +157,14 @@ type EventPayloadMapping = {
 interface Window {
     electron: {
         getProducts: () => Promise<Product[]>;
+        addProduct: (request: ProductRequest) => Promise<Product | null>;
+        updateProduct: (request: ProductRequest) => Promise<Product | null>;
+        deleteProduct: (request: ProductRequest) => Promise<Product | null>;
         getCombos: () => Promise<Combo[]>;
         getUsers: (user: User) => Promise<User[]>;
-        addUser: (request: AddDeleteUserRequest) => Promise<User | null>;
-        deleteUser: (request: AddDeleteUserRequest) => Promise<User | null>;
+        addUser: (request: UserRequest) => Promise<User | null>;
+        updateUser: (request: UserRequest) => Promise<User | null>;
+        deleteUser: (request: UserRequest) => Promise<User | null>;
         authenticatePIN: (pin: string) => Promise<User | undefined>;
         startSession: (request: StartSessionRequest) => Promise<Session>;
         endSession: (user: User) => Promise<Session>;

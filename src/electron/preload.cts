@@ -2,9 +2,13 @@ import electron from "electron";
 
 electron.contextBridge.exposeInMainWorld("electron", {
     getProducts: () => ipcInvoke("getProducts"),
+    addProduct: (request) => ipcInvoke("addProduct", request),
+    updateProduct: (request) => ipcInvoke("updateProduct", request),
+    deleteProduct: (request) => ipcInvoke("deleteProduct", request),
     getCombos: () => ipcInvoke("getCombos"),
     getUsers: (user) => ipcInvoke("getUsers", user),
     addUser: (request) => ipcInvoke("addUser", request),
+    updateUser: (request) => ipcInvoke("updateUser", request),
     deleteUser: (request) => ipcInvoke("deleteUser", request),
     authenticatePIN: (pin) => ipcInvoke("authenticatePIN", pin),
     startSession: (request) => ipcInvoke("startSession", request),
