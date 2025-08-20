@@ -18,6 +18,7 @@ import {
     startShift,
     endShift,
     createSale,
+    openDrawer,
 } from "./controllers.js";
 
 const db = database;
@@ -62,6 +63,7 @@ app.on("ready", () => {
     ipcMainHandle("startShift", (_, user) => startShift(user));
     ipcMainHandle("endShift", (_, user) => endShift(user));
     ipcMainHandle("createSale", (_, sale) => createSale(sale));
+    ipcMainHandle("openDrawer", () => openDrawer());
 });
 
 app.on("before-quit", () => {
