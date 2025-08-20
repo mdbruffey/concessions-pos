@@ -3,19 +3,18 @@ import POSButton from "./POSButton";
 import styles from "./styles/KeypadModal.module.css";
 
 type KeypadProps = {
-    users: User[]
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+    header: string;
     setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
     close: () => void;
 }
 
-export default function KeypadModal({setCurrentUser, close}: KeypadProps){
+export default function KeypadModal({header, setCurrentUser, close}: KeypadProps){
     const [pin, setPin] = useState<string>("");
     const keysDisabled = pin.length >= 4 ? " disabled" : ""
     return (
         <div className={styles.backdrop}>
             <div className={styles.modal}>
-                <h2>Clock In/Out</h2>
+                <h2>{header}</h2>
                 <POSButton label="🗙" className={styles.close} onClick={close}/>
                 <input type="password" value={pin} readOnly={true}/>
                 <div className={styles.keypad}>

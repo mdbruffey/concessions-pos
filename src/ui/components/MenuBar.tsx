@@ -34,8 +34,7 @@ export default function MenuBar({
             />
             {showKeypadModal && (
                 <KeypadModal
-                    users={users}
-                    setUsers={setUsers}
+                    header="Clock In/Out"
                     setCurrentUser={setCurrentUser}
                     close={closeKeypad}
                 />

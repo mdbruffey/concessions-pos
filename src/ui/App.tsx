@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import MenuBar from "./components/MenuBar";
 import SaleWindow from "./components/SaleWindow";
+import ManageWindow from "./components/ManageWindow";
 
 function App() {
     const [users, setUsers] = useState<User[]>([]);
@@ -24,6 +25,9 @@ function App() {
                     users={users}
                     session={session}
                 />
+            }
+            {page === "manage" && 
+                <ManageWindow />
             }
         </div>
     );
