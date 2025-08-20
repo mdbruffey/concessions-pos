@@ -71,6 +71,8 @@ export default function CheckoutModal({
                             } catch (error) {
                                 console.log(error);
                             }
+                            if (sale.payment_type === "cash")
+                                console.log(await window.electron.openDrawer());
                             setSale(emptySale);
                             setShowCheckoutModal(false);
                         }}
