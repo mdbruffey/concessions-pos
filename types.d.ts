@@ -152,6 +152,10 @@ type EventPayloadMapping = {
         request: Sale;
         response: number;
     };
+    openDrawer: {
+        request: undefined;
+        response: boolean;
+    }
 };
 
 interface Window {
@@ -171,5 +175,6 @@ interface Window {
         startShift: (user: User) => Promise<Shift>;
         endShift: (user: User) => Promise<Shift>;
         createSale: (sale: Sale) => Promise<number>;
+        openDrawer: () => Promise<boolean>;
     };
 }

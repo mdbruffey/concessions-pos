@@ -1,4 +1,5 @@
 import db from "./database/db.js";
+import port from "./drawerPort.js";
 
 export function getProducts(): Product[] {
     const allProducts = db.prepare<[], Product>("SELECT * from products");
@@ -6,9 +7,12 @@ export function getProducts(): Product[] {
     return products;
 }
 
-export function addProduct(request: ProductRequest): Product | null{
+export function addProduct(request: ProductRequest): Product | null {
     const product = request.product;
-    const addProductStmt = db.prepare<[string, string, string, number, string | null],Product>(
+    const addProductStmt = db.prepare<
+        [string, string, string, number, string | null],
+        Product
+    >(
         "INSERT INTO products (name, type combo_option_type, default_price, image_path VALUES(?,?,?,?,?) RETURNING *"
     );
     const newProduct = addProductStmt.get(
@@ -18,12 +22,15 @@ export function addProduct(request: ProductRequest): Product | null{
         product.default_price,
         product.image_path
     );
-    if(newProduct) return newProduct;
+    if (newProduct) return newProduct;
     return null;
-
-}export function updateProduct(request: ProductRequest): Product | null{
+}
+export function updateProduct(request: ProductRequest): Product | null {
     const product = request.product;
-    const addProductStmt = db.prepare<[string, string, string, number, string | null],Product>(
+    const addProductStmt = db.prepare<
+        [string, string, string, number, string | null],
+        Product
+    >(
         "UPDATE products SET name = ?, type = ? combo_option_type = ?, default_price = ?, image_path = ? RETURNING *"
     );
     const updatedProduct = addProductStmt.get(
@@ -33,16 +40,16 @@ export function addProduct(request: ProductRequest): Product | null{
         product.default_price,
         product.image_path
     );
-    if(updatedProduct) return updatedProduct;
+    if (updatedProduct) return updatedProduct;
     return null;
-
-}export function deleteProduct(request: ProductRequest): Product | null{
+}
+export function deleteProduct(request: ProductRequest): Product | null {
     const product = request.product;
-    const deleteProductStmt = db.prepare<[number],Product>(
+    const deleteProductStmt = db.prepare<[number], Product>(
         "DELETE FROM products WHERE id = ? RETURNING *"
     );
     const newProduct = deleteProductStmt.get(product.id);
-    if(newProduct) return newProduct;
+    if (newProduct) return newProduct;
     return null;
 }
 
@@ -52,8 +59,8 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
-export function getUsers(user: User): User[]{
-    if(!(user.id === 1)) return [];
+export function getUsers(user: User): User[] {
+    if (!(user.id === 1)) return [];
     const getUsersStmt = db.prepare<[], User>("SELECT * from users");
     const users = getUsersStmt.all();
     return users;
@@ -73,11 +80,14 @@ export function addUser(request: UserRequest): User | null {
     );
     if (newUser) return newUser;
     return null;
-
-}export function updateUser(request: UserRequest): User | null {
+}
+export function updateUser(request: UserRequest): User | null {
     if (!(request.authenticatingUser.id === 1)) return null;
     const userObject = request.userObject;
-    const updateUserStmt = db.prepare<[string, string, string, string, number], User>(
+    const updateUserStmt = db.prepare<
+        [string, string, string, string, number],
+        User
+    >(
         "UPDATE users SET username = ?, first_name = ?, last_name = ?, pin = ? WHERE id = ? RETURNING *"
     );
     const updatedUser = updateUserStmt.get(
@@ -85,7 +95,7 @@ export function addUser(request: UserRequest): User | null {
         userObject.first_name,
         userObject.last_name,
         userObject.pin,
-        userObject.id,
+        userObject.id
     );
     if (updatedUser) return updatedUser;
     return null;
@@ -245,4 +255,15 @@ export function createSale(sale: Sale): number {
     });
 
     return createSaleTransaction(sale);
+}
+
+export function openDrawer(): boolean {
+    port.write(Buffer.from([0x07]), (err) => {
+        if (err) {
+            console.error("Failed to open drawer", err);
+            return false;
+        }
+    });
+    console.log("Drawer triggered");
+    return true;
 }
