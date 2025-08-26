@@ -57,7 +57,7 @@
 
 .candy {
     grid-row: 5 / 7;
-    grid-column: 3 / 7;
+    grid-column: 1 / 8;
     border-left: 1px solid black;
     border-right: 1px solid black;
     border-top: 1px solid black;
@@ -65,7 +65,7 @@
 
 .special {
     grid-row: 5 / 7;
-    grid-column: 7 / 10;
+    grid-column: 8 / 10;
     border-top: 1px solid black;
     border-left: 1px solid black;
 }
