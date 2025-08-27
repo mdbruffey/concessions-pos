@@ -59,7 +59,7 @@ export default function CheckoutModal({
                         className={sale.payment_type ? "" : "disabled"}
                         onClick={async () => {
                             try {
-                                const finalSale = { ...sale };
+                                const finalSale = { ...sale, time: new Date().toISOString() };
                                 //this *should* always be true, but just in case, my user (id: 1) is the
                                 //default; otherwise the first user in the users list will be used
                                 if(users.length){

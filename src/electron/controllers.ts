@@ -218,7 +218,7 @@ export function endShift(user: User): Shift {
 
 export function createSale(sale: Sale): number {
     const insertSaleStmt = db.prepare(
-        "INSERT INTO sales (total, user_id, time) VALUES(?,?,?)"
+        "INSERT INTO sales (total, payment_type, user_id, time) VALUES(?,?,?,?)"
     );
     const insertComboSelectionStmt = db.prepare(
         "INSERT INTO combo_selections (sale_item_id, product_id, option_type, quantity) VALUES(?,?,?,?)"
@@ -226,9 +226,16 @@ export function createSale(sale: Sale): number {
     const insertSaleItemStmt = db.prepare(
         "INSERT INTO sale_items VALUES(NULL,?,?,?,?,?,?,?) RETURNING id"
     );
+    const getCurrentSession = db.prepare<[], Session>(
+        "SELECT * FROM sessions where end IS NULL"
+    );
+    const currentSession = getCurrentSession.get();
+    const insertSessionSaleStmt = db.prepare(
+        "INSERT INTO session_sales VALUES(?,?)"
+    );
 
     const createSaleTransaction = db.transaction((sale: Sale) => {
-        const result = insertSaleStmt.run(sale.total, sale.user_id, sale.time);
+        const result = insertSaleStmt.run(sale.total, sale.payment_type, sale.user_id, sale.time);
         const saleId = result.lastInsertRowid as number;
         for (let item of sale.items) {
             const sale_item_id = insertSaleItemStmt.run(
@@ -251,6 +258,8 @@ export function createSale(sale: Sale): number {
                 }
             }
         }
+        if(!currentSession) throw new Error("No existing session...")
+        insertSessionSaleStmt.run(currentSession.id, saleId);
         return saleId;
     });
 
