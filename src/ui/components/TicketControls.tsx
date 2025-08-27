@@ -56,6 +56,7 @@ export default function TicketControls({
     };
 
     const clearTicket = (element: EventTarget & HTMLButtonElement) => {
+        setActiveItem(null);
         setSale(emptySale);
         element.classList.remove(styles.pressed);
     };
