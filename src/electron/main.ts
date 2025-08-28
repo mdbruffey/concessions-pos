@@ -2,24 +2,7 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
-import {
-    getProducts,
-    addProduct,
-    updateProduct,
-    deleteProduct,
-    getCombos,
-    getUsers,
-    addUser,
-    updateUser,
-    deleteUser,
-    authenticatePIN,
-    startSession,
-    endSession,
-    startShift,
-    endShift,
-    createSale,
-    openDrawer,
-} from "./controllers.js";
+import * as api from "./controllers.js";
 
 const db = database;
 let width = 2560;
@@ -47,23 +30,33 @@ app.on("ready", () => {
             path.join(app.getAppPath(), "/dist-react/index.html")
         );
     }
+    //Product Handling
+    ipcMainHandle("getProducts", () => api.getProducts());
+    ipcMainHandle("addProduct", (_, request) => api.addProduct(request));
+    ipcMainHandle("updateProduct", (_, request) => api.updateProduct(request));
+    ipcMainHandle("deleteProduct", (_, request) => api.deleteProduct(request));
 
-    ipcMainHandle("getProducts", () => getProducts());
-    ipcMainHandle("addProduct", (_, request) => addProduct(request));
-    ipcMainHandle("updateProduct", (_, request) => updateProduct(request));
-    ipcMainHandle("deleteProduct", (_, request) => deleteProduct(request));
-    ipcMainHandle("getCombos", () => getCombos());
-    ipcMainHandle("getUsers", (_, user) => getUsers(user));
-    ipcMainHandle("addUser", (_, request) => addUser(request));
-    ipcMainHandle("updateUser", (_, request) => updateUser(request));
-    ipcMainHandle("deleteUser", (_, request) => deleteUser(request));
-    ipcMainHandle("authenticatePIN", (_, pin) => authenticatePIN(pin));
-    ipcMainHandle("startSession", (_, request) => startSession(request));
-    ipcMainHandle("endSession", (_, user) => endSession(user));
-    ipcMainHandle("startShift", (_, user) => startShift(user));
-    ipcMainHandle("endShift", (_, user) => endShift(user));
-    ipcMainHandle("createSale", (_, sale) => createSale(sale));
-    ipcMainHandle("openDrawer", () => openDrawer());
+    //Combo Handling
+    ipcMainHandle("getCombos", () => api.getCombos());
+
+    //User Handling
+    ipcMainHandle("getUsers", (_, user) => api.getUsers(user));
+    ipcMainHandle("addUser", (_, request) => api.addUser(request));
+    ipcMainHandle("updateUser", (_, request) => api.updateUser(request));
+    ipcMainHandle("deleteUser", (_, request) => api.deleteUser(request));
+
+    //Session Handling
+    ipcMainHandle("authenticatePIN", (_, pin) => api.authenticatePIN(pin));
+    ipcMainHandle("startSession", (_, request) => api.startSession(request));
+    ipcMainHandle("endSession", (_, user) => api.endSession(user));
+    ipcMainHandle("startShift", (_, user) => api.startShift(user));
+    ipcMainHandle("endShift", (_, user) => api.endShift(user));
+    ipcMainHandle("createSale", (_, sale) => api.createSale(sale));
+    ipcMainHandle("openDrawer", () => api.openDrawer());
+
+    //Report Handling
+    ipcMainHandle("getSessions", () => api.getSessions());
+    ipcMainHandle("getSalesBySession", (_, id) => api.getSalesBySession(id));
 });
 
 app.on("before-quit", () => {
@@ -80,7 +73,7 @@ app.on("before-quit", () => {
             throw new Error(
                 "Somehow there is an active shift for a non-existing user????"
             );
-        endShift(user);
+        api.endShift(user);
     }
 
     const getActiveSession = db.prepare<[], Session>(
@@ -93,7 +86,7 @@ app.on("before-quit", () => {
         );
         const user = getUser.get(activeShifts[0].user_id);
         if (!user) throw new Error("No user available to end session??");
-        endSession(user);
+        api.endSession(user);
     }
     try {
         db.close();

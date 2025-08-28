@@ -17,6 +17,8 @@ electron.contextBridge.exposeInMainWorld("electron", {
     endShift: (user) => ipcInvoke("endShift", user),
     createSale: (sale) => ipcInvoke("createSale", sale),
     openDrawer: () => ipcInvoke("openDrawer"),
+    getSessions: () => ipcInvoke("getSessions"),
+    getSalesBySession: (id) => ipcInvoke("getSalesBySession", id),
 } satisfies Window["electron"]);
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(

@@ -204,9 +204,11 @@ export function endShift(user: User): Shift {
     const currentSessionId = getSession.get();
     if (!currentSessionId) throw new Error("No active session.");
 
-    const setCurrentShiftEnd = db.prepare<[string, number, number], Shift>(
-        "UPDATE shifts SET end = ? WHERE session_id = ? and user_id = ? and end IS NULL RETURNING *"
-    );
+    const setCurrentShiftEnd = db.prepare<[string, number, number], Shift>(`
+        UPDATE shifts SET end = ?
+        WHERE session_id = ? and user_id = ? 
+        and end IS NULL RETURNING *
+    `);
     const endedShift = setCurrentShiftEnd.get(
         endTime.toISOString(),
         currentSessionId.id,
@@ -275,4 +277,23 @@ export function openDrawer(): boolean {
     });
     console.log("Drawer triggered");
     return true;
+}
+
+export function getSessions(): Session[] {
+    const getSessions = db.prepare<[], Session>(
+        "SELECT * FROM sessions"
+    );
+    const sessions = getSessions.all();
+    return sessions;
+}
+
+export function getSalesBySession(id: number): Sale[] {
+    const getSales = db.prepare<[number], Sale>(`
+        SELECT s.* 
+        FROM sales s 
+        INNER JOIN session_sales ss ON s.id = ss.sale_id
+        WHERE ss.session_id = ?
+    `)
+    const sales = getSales.all(id);
+    return sales;
 }
