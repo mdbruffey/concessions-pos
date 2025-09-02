@@ -119,6 +119,13 @@ export const products = [
         image_path: "",
     },
     {
+        name: "Blue Gatorade",
+        type: "drink",
+        combo_option_type: "",
+        default_price: 2,
+        image_path: "",
+    },
+    {
         name: "Ice Cream Sandwich",
         type: "frozen",
         combo_option_type: "",
@@ -238,6 +245,13 @@ export const products = [
         image_path: "",
     },
     {
+        name: "Granola Bars",
+        type: "candy",
+        combo_option_type: "",
+        default_price: 1,
+        image_path: "",
+    },
+    {
         name: "Nacho Cheese Doritos",
         type: "chips",
         combo_option_type: "chips",
@@ -274,6 +288,13 @@ export const products = [
     },
     {
         name: "Sour Cream & Onion Lays",
+        type: "chips",
+        combo_option_type: "chips",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Classic Lays",
         type: "chips",
         combo_option_type: "chips",
         default_price: 1,

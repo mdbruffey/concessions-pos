@@ -2,6 +2,7 @@ import styles from "./styles/ManageWindow.module.css";
 import KeypadModal from "./KeypadModal";
 import { useState, useEffect } from "react";
 import POSButton from "./POSButton";
+import ProductCard from "./manage/ProductCard";
 
 export default function ManageWindow() {
     const [activeUser, setActiveUser] = useState<User | null>(null);
@@ -41,7 +42,7 @@ export default function ManageWindow() {
     
     const productCards = products.map((p, i) => {
         return (
-            <div key={i}>{`Name: ${p.name} | type: ${p.type} | price: ${p.default_price}`}</div>
+            <ProductCard product={p} user={activeUser!} key={i}/> //revisit the ! here.
         )
     })
     

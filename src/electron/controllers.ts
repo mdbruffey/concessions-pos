@@ -27,18 +27,20 @@ export function addProduct(request: ProductRequest): Product | null {
 }
 export function updateProduct(request: ProductRequest): Product | null {
     const product = request.product;
+    console.log(product.combo_option_type)
     const addProductStmt = db.prepare<
-        [string, string, string, number, string | null],
+        [string, string, string, number, string | null, number],
         Product
     >(
-        "UPDATE products SET name = ?, type = ? combo_option_type = ?, default_price = ?, image_path = ? RETURNING *"
+        "UPDATE products SET name = ?, type = ?, combo_option_type = ?, default_price = ?, image_path = ?, active = ? RETURNING *"
     );
     const updatedProduct = addProductStmt.get(
         product.name,
         product.type,
         product.combo_option_type,
         product.default_price,
-        product.image_path
+        product.image_path,
+        product.active
     );
     if (updatedProduct) return updatedProduct;
     return null;
