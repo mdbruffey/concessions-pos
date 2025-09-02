@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS products (
     type TEXT,
     combo_option_type TEXT CHECK(combo_option_type in ('','main', 'chips', 'drink')),
     default_price REAL NOT NULL,
-    image_path TEXT
+    image_path TEXT,
+    active INTEGER DEFAULT(1)
 );
 
 CREATE TABLE IF NOT EXISTS combos (
