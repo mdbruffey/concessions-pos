@@ -15,7 +15,7 @@ type Product = {
     combo_option_type: string;
     default_price: number;
     image_path: string | null;
-    active: 0 | 1;
+    active: number; //should just be 0 or 1
 };
 
 type Combo = {

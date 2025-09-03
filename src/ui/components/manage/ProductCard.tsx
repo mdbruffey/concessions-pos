@@ -16,14 +16,14 @@ export default function ProductCard({product, user}: ProductCardProps) {
                 <input
                     type="checkbox"
                     checked={p.active ? true : false}
-                    onChange={(e) => {
-                        setP((prev) => {
-                            return {
-                                ...prev,
-                                active: !prev.active ? 1:0,
+                    value={p.name}
+                    onChange={() => {
+                        const updated = {
+                                ...p,
+                                active: p.active ? 0 : 1,
                             };
-                        });
-                        //window.electron.updateProduct({user: user, product: p});
+                        setP(updated);
+                        window.electron.updateProduct({user: user, product: updated});
                     }}
                 />
             </label>
