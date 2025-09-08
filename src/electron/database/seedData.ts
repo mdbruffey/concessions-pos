@@ -314,6 +314,20 @@ export const products = [
         default_price: 1,
         image_path: "",
     },
+    {
+        name: "Dr. Pepper",
+        type: "drink",
+        combo_option_type: "drink",
+        default_price: 2,
+        image_path: "",
+    },
+    {
+        name: "Pretzel with Cheese",
+        type: "hot",
+        combo_option_type: "",
+        default_price: 2.5,
+        image_path: "",
+    },
 ];
 
 export const combos = [
