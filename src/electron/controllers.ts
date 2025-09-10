@@ -1,5 +1,5 @@
 import db from "./database/db.js";
-import port from "./drawerPort.js";
+import getPort from "./drawerPort.js";
 
 export function getProducts(): Product[] {
     const allProducts = db.prepare<[], Product>("SELECT * from products");
@@ -271,6 +271,10 @@ export function createSale(sale: Sale): number {
 }
 
 export function openDrawer(): boolean {
+    const port = getPort();
+    if (!port.isOpen){
+        return false;
+    }
     port.write(Buffer.from([0x07]), (err) => {
         if (err) {
             console.error("Failed to open drawer", err);

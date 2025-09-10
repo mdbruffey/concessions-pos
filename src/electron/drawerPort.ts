@@ -1,4 +1,17 @@
 import { SerialPort } from "serialport";
 
-const port = new SerialPort({ path: "/dev/ttyUSB0", baudRate: 9600 });
-export default port;
+let port: SerialPort;
+
+function createPort(path = "/dev/ttyUSB0", baudRate = 9600) {
+    port = new SerialPort({ path: path, baudRate: baudRate });
+}
+
+function getPort() {
+    if (port && port.isOpen) {
+        return port;
+    }
+    createPort();
+    return port;
+}
+
+export default getPort;
