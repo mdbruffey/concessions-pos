@@ -328,6 +328,20 @@ export const products = [
         default_price: 2.5,
         image_path: "",
     },
+    {
+        name: "Chocolate M&Ms",
+        type: "candy",
+        combo_option_type: "",
+        default_price: 2,
+        image_path: "",
+    },
+    {
+        name: "Peanut Butter M&Ms",
+        type: "candy",
+        combo_option_type: "",
+        default_price: 2,
+        image_path: "",
+    },
 ];
 
 export const combos = [
