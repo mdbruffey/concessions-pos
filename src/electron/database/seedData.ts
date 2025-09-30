@@ -342,6 +342,13 @@ export const products = [
         default_price: 2,
         image_path: "",
     },
+    {
+        name: "Chick-fil-A Sandwich",
+        type: "hot",
+        combo_option_type: "",
+        default_price: 7,
+        image_path: "",
+    },
 ];
 
 export const combos = [
