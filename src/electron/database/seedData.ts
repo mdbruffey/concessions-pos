@@ -349,6 +349,34 @@ export const products = [
         default_price: 7,
         image_path: "",
     },
+    {
+        name: "Nachos",
+        type: "hot",
+        combo_option_type: "",
+        default_price: 2,
+        image_path: "",
+    },
+    {
+        name: "Donut",
+        type: "special",
+        combo_option_type: "",
+        default_price: 1,
+        image_path: "",
+    },
+    {
+        name: "Muffin",
+        type: "special",
+        combo_option_type: "",
+        default_price: 2,
+        image_path: "",
+    },
+    {
+        name: "Coffee",
+        type: "drink",
+        combo_option_type: "",
+        default_price: 1,
+        image_path: "",
+    },
 ];
 
 export const combos = [
