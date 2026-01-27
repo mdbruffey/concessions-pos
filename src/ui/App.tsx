@@ -3,6 +3,7 @@ import "./App.css";
 import MenuBar from "./components/MenuBar";
 import SaleWindow from "./components/SaleWindow";
 import ManageWindow from "./components/ManageWindow";
+import ReportsWindow from "./components/ReportsWindow"
 
 function App() {
     const [users, setUsers] = useState<User[]>([]);
@@ -28,6 +29,9 @@ function App() {
             }
             {page === "manage" && 
                 <ManageWindow />
+            }
+            {page === "reports" && 
+                <ReportsWindow />
             }
         </div>
     );
