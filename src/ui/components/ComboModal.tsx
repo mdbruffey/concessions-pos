@@ -84,7 +84,7 @@ export default function ComboModal({
     }, []);
 
     const chipOptionButtons = products
-        .filter((i) => i.combo_option_type === "chips")
+        .filter((i) => i.combo_option_type === "chips" && i.active)
         .map((p, i) => (
             <POSButton
                 label={p.name}
@@ -101,7 +101,7 @@ export default function ComboModal({
             />
         ));
     const drinkOptionButtons = products
-        .filter((i) => i.combo_option_type === "drink")
+        .filter((i) => i.combo_option_type === "drink" && i.active)
         .map((p, i) => (
             <POSButton
                 label={p.name}
