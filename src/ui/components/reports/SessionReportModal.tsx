@@ -17,7 +17,7 @@ export default function SessionReportModal({
     useEffect(() => {
         if(session.id){
             window.electron.getSalesBySession(session.id!)
-                .then((sales) => setSales(sales))
+                .then((sales) => setSales(sales.filter((s) => s.total > 0)))
                 .catch((error) => console.error(error))
         }
     })
