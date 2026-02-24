@@ -2,14 +2,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 91vh;
+    justify-content: flex-start;
+    height: 85vh;
     padding: 10px;
 }
 
 .main > h2 {
     border-bottom: 2px solid black;
     width: 80%;
+    height: 100%;
     padding-bottom: 10px;
+    flex: 0;
 }
 
 .login {
@@ -23,11 +26,21 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 100%;
     width: 80%;
+    height: 100%;
 }
 
 .sectionContainer > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    height: 100%;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.sectionContainer > div > div {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -36,5 +49,5 @@
     overflow-x: hidden;
     overflow-y: auto;
     padding: 10px;
-    border: 2px solid black;
 }
+
