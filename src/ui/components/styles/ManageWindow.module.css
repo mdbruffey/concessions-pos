@@ -43,7 +43,7 @@
 .sectionContainer > div > div {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     min-height: 0;
     flex: 1;
     overflow-x: hidden;
@@ -51,3 +51,6 @@
     padding: 10px;
 }
 
+.sectionContainer > div > button {
+    height: 50px;
+}

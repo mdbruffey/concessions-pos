@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./styles/ProductCard.module.css"
+import POSButton from "../POSButton";
 
 type ProductCardProps = {
     product: Product;
@@ -10,7 +11,8 @@ export default function ProductCard({product, user}: ProductCardProps) {
     return (
         <div className={styles.card}>
             <div>{p.name}</div>
-            <div>{`Price: $${p.default_price}`}</div>
+            <div>{`$${p.default_price}`}</div>
+            <POSButton label="Edit" onClick={() => null}/>
             <label>
                 {`Active: `}
                 <input

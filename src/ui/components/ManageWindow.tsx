@@ -3,6 +3,7 @@ import KeypadModal from "./KeypadModal";
 import { useState, useEffect } from "react";
 import POSButton from "./POSButton";
 import ProductCard from "./manage/ProductCard";
+import ComboCard from "./manage/ComboCard";
 
 export default function ManageWindow() {
     const [activeUser, setActiveUser] = useState<User | null>(null);
@@ -48,7 +49,7 @@ export default function ManageWindow() {
     
     const comboCards = combos.map((c, i) => {
         return (
-            <div key={i}>{`Name: ${c.name} | main: ${c.main_item_type} | price: ${c.default_price}`}</div>
+            <ComboCard combo={c} user={activeUser!} key={i} />
         )
     })
 
@@ -73,14 +74,17 @@ export default function ManageWindow() {
                     <div>
                         <h3>Products</h3>
                         <div className={styles.products}>{productCards}</div>
+                        <POSButton label="Add Item" onClick={() => null}/>
                     </div>
                     <div>
                         <h3>Combos</h3>
                         <div className={styles.combos}>{comboCards}</div>
+                        <POSButton label="Add Combo" onClick={() => null}/>
                     </div>
                     <div>
                         <h3>Users</h3>
                         <div className={styles.users}>{userCards}</div>
+                        <POSButton label="Add User" onClick={() => null}/>
                     </div>
                 </div>
             ) : (
