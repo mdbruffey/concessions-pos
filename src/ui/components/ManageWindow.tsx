@@ -41,11 +41,19 @@ export default function ManageWindow() {
             }
         }, [activeUser]);
     
-    const productCards = products.map((p, i) => {
-        return (
-            <ProductCard product={p} user={activeUser!} key={i}/> //revisit the ! here.
-        )
-    })
+    const productCards = products
+        .sort((a, b) => {
+            if (a.active !== b.active) return b.active - a.active;
+            const order = ["chips", "drink", "hot"];
+            let aVal = order.findIndex((o) => a.type.includes(o));
+            let bVal = order.findIndex((o) => b.type.includes(o));
+            return bVal - aVal;
+        })
+        .map((p, i) => {
+            return (
+                <ProductCard product={p} user={activeUser!} key={i} /> //revisit the ! here.
+            );
+        });
     
     const comboCards = combos.map((c, i) => {
         return (
