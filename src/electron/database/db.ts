@@ -45,4 +45,16 @@ const test = db.prepare("SELECT * FROM products");
 const test_results = test.all();
 console.log(`${test_results.length} products in database`);
 
+//Database Updates
+//Check if "active" column exists in combos table
+const combo_col_data = db.pragma("table_info('combos')")
+if(!((combo_col_data as Array<any>).map((i) => i.name).includes("active"))){
+    console.log((combo_col_data as Array<any>).map((i) => i.name))
+    db.exec("ALTER TABLE combos ADD COLUMN active INTEGER DEFAULT(1)");
+    console.log("Added column");
+}
+else{
+    console.log("combos table already updated")
+}
+
 export default db;

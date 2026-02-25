@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS combos (
     main_item_type TEXT,
     main_item_quantity REAL,
     default_price REAL NOT NULL
+    active INTEGER DEFAULT(1)
 );
 
 CREATE TABLE IF NOT EXISTS sales (
