@@ -61,6 +61,26 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
+export function updateCombo(request: ComboRequest): Combo | null {
+    const combo = request.combo;
+    const updComboStmt = db.prepare<
+        [string, string, number, number, number, number],
+        Combo
+    >(
+        "UPDATE combos SET name = ?, main_item_type = ?, main_item_quantity = ?, default_price = ?, active = ? WHERE id = ? RETURNING *"
+    );
+    const updatedCombo = updComboStmt.get(
+        combo.name,
+        combo.main_item_type,
+        combo.main_item_quantity,
+        combo.default_price,
+        combo.active,
+        combo.id
+    );
+    if (updatedCombo) return updatedCombo;
+    return null;
+}
+
 export function getUsers(user: User): User[] {
     if (!(user.id === 1)) return [];
     const getUsersStmt = db.prepare<[], User>("SELECT * from users");

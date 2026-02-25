@@ -24,6 +24,7 @@ type Combo = {
     main_item_type: string;
     main_item_quantity: number;
     default_price: number;
+    active: number; //0 | 1
 }
 
 type Sale = {
@@ -113,6 +114,18 @@ type EventPayloadMapping = {
         request: undefined;
         response: Combo[];
     };
+    addCombo: {
+        request: ComboRequest;
+        response: Combo | null;
+    };
+    updateCombo: {
+        request: ComboRequest;
+        response: Combo | null;
+    };
+    deleteCombo: {
+        request: ComboRequest;
+        response: Combo | null;
+    };
     getUsers: {
         request: User;
         response: User[];
@@ -174,6 +187,9 @@ interface Window {
         updateProduct: (request: ProductRequest) => Promise<Product | null>;
         deleteProduct: (request: ProductRequest) => Promise<Product | null>;
         getCombos: () => Promise<Combo[]>;
+        addCombo: (request: ComboRequest) => Promise<Combo | null>;
+        updateCombo: (request: ComboRequest) => Promise<Combo | null>;
+        deleteCombo: (request: ComboRequest) => Promise<Combo | null>;
         getUsers: (user: User) => Promise<User[]>;
         addUser: (request: UserRequest) => Promise<User | null>;
         updateUser: (request: UserRequest) => Promise<User | null>;
