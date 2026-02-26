@@ -10,17 +10,18 @@ export function getProducts(): Product[] {
 export function addProduct(request: ProductRequest): Product | null {
     const product = request.product;
     const addProductStmt = db.prepare<
-        [string, string, string, number, string | null],
+        [string, string, string, number, string | null, number],
         Product
     >(
-        "INSERT INTO products (name, type combo_option_type, default_price, image_path VALUES(?,?,?,?,?) RETURNING *"
+        "INSERT INTO products VALUES(?,?,?,?,?,?) RETURNING *"
     );
     const newProduct = addProductStmt.get(
         product.name,
         product.type,
         product.combo_option_type,
         product.default_price,
-        product.image_path
+        product.image_path,
+        product.active
     );
     if (newProduct) return newProduct;
     return null;
