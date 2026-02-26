@@ -76,7 +76,7 @@ export default function SaleWindow({users, session}: SaleWindowProps) {
                 <>
                     <SaleItems
                         products={products.filter((i) => i.active)}
-                        combos={combos}
+                        combos={combos.filter((i) => i.active)}
                         sale={sale}
                         setSale={setSale}
                         createComboModal={createComboModal}
