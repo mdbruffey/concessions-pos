@@ -61,6 +61,24 @@ export function getCombos(): Combo[] {
     return combos;
 }
 
+export function addCombo(request: ComboRequest): Combo | null {
+    const combo = request.combo;
+    const addComboStmt = db.prepare<
+        [string, string, number, number, number],
+        Combo
+    >(
+        "INSERT INTO combos VALUES (?,?,?,?,?) RETURNING *"
+    );
+    const updatedCombo = addComboStmt.get(
+        combo.name,
+        combo.main_item_type,
+        combo.main_item_quantity,
+        combo.default_price,
+        combo.active
+    );
+    if (updatedCombo) return updatedCombo;
+    return null;
+}
 export function updateCombo(request: ComboRequest): Combo | null {
     const combo = request.combo;
     const updComboStmt = db.prepare<
