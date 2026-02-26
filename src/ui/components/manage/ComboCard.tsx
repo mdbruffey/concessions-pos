@@ -5,14 +5,15 @@ import POSButton from "../POSButton";
 type ComboCardProps = {
     combo: Combo;
     user: User;
+    edit: () => void;
 }
-export default function ComboCard({combo, user}: ComboCardProps) {
+export default function ComboCard({combo, user, edit}: ComboCardProps) {
     const [c, setC] = useState<Combo>(combo);
     return (
         <div className={styles.card}>
             <div>{c.name}</div>
             <div>{`$${c.default_price}`}</div>
-            <POSButton label="Edit" onClick={() => null}/>
+            <POSButton label="Edit" onClick={edit}/>
             <label>
                 {`Active: `}
                 <input

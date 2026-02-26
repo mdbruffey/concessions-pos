@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import POSButton from "./POSButton";
 import ProductCard from "./manage/ProductCard";
 import ComboCard from "./manage/ComboCard";
+import Modal from "./Modal";
 
 export default function ManageWindow() {
     const [activeUser, setActiveUser] = useState<User | null>(null);
@@ -11,6 +12,7 @@ export default function ManageWindow() {
     const [products, setProducts] = useState<Product[]>([]);
     const [combos, setCombos] = useState<Combo[]>([]);
     const [users, setUsers] = useState<User[]>([]);
+    const [activeEdit, setActiveEdit] = useState<Product | Combo | null>(null);
 
     useEffect(() => {
             window.electron
@@ -51,14 +53,24 @@ export default function ManageWindow() {
         })
         .map((p, i) => {
             return (
-                <ProductCard product={p} user={activeUser!} key={i} /> //revisit the ! here.
+                <ProductCard
+                    product={p}
+                    user={activeUser!} //revisit the ! here.
+                    edit={() => setActiveEdit(p)}
+                    key={i}
+                /> 
             );
         });
     
     const comboCards = combos.map((c, i) => {
         return (
-            <ComboCard combo={c} user={activeUser!} key={i} />
-        )
+            <ComboCard
+                combo={c}
+                user={activeUser!} //revisit the ! here.
+                edit={() => setActiveEdit(c)}
+                key={i}
+            />
+        );
     })
 
     const userCards = users.map((u, i) => {
@@ -102,6 +114,9 @@ export default function ManageWindow() {
                         onClick={() => setShowKeypad(true)}
                     />
                 </div>
+            )}
+            {activeEdit && (
+                <Modal content={<></>} close={() => setActiveEdit(null)}/>
             )}
         </div>
     );

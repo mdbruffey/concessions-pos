@@ -5,14 +5,15 @@ import POSButton from "../POSButton";
 type ProductCardProps = {
     product: Product;
     user: User;
+    edit: () => void;
 }
-export default function ProductCard({product, user}: ProductCardProps) {
+export default function ProductCard({product, user, edit}: ProductCardProps) {
     const [p, setP] = useState<Product>(product);
     return (
         <div className={styles.card}>
             <div>{p.name}</div>
             <div>{`$${p.default_price}`}</div>
-            <POSButton label="Edit" onClick={() => null}/>
+            <POSButton label="Edit" onClick={edit}/>
             <label>
                 {`Active: `}
                 <input
