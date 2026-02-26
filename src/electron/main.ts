@@ -38,6 +38,7 @@ app.on("ready", () => {
 
     //Combo Handling
     ipcMainHandle("getCombos", () => api.getCombos());
+    ipcMainHandle("addCombo", (_, request) => api.addCombo(request));
     ipcMainHandle("updateCombo", (_, request) => api.updateCombo(request));
 
     //User Handling
