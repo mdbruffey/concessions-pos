@@ -1,18 +1,44 @@
-import { useState } from "react";
 import styles from "./styles/EditItem.module.css";
 import { isProduct } from "../../utils";
 import POSButton from "../POSButton";
 
 type EditItemProps = {
-    editItem: Product | Combo;
+    item: Product | Combo;
+    setItem: React.Dispatch<React.SetStateAction<Product | Combo | null>>;
+    user: User | null;
 };
 
-export default function EditItem({ editItem }: EditItemProps) {
-    const [item, setItem] = useState(editItem);
+export default function EditItem({ item, setItem, user }: EditItemProps) {
 
     function handleChange(field: keyof (Product & Combo), value: any) {
         const newItem = { ...item, [field]: value };
         setItem(newItem);
+    }
+
+    function submitProduct(product: Product, user: User){
+        if (product.id < 0) {
+            //new product
+            window.electron
+                .addProduct({ product: product, user: user })
+                .then(() => setItem(null));
+        } else {
+            window.electron
+                .updateProduct({ product: product, user: user })
+                .then(() => setItem(null));
+        }
+    }
+    
+    function submitCombo(combo: Combo, user: User) {
+        if (combo.id < 0) {
+            //new combo
+            window.electron
+                .addCombo({ combo: combo, user: user })
+                .then(() => setItem(null));
+        } else {
+            window.electron
+                .updateCombo({ combo: combo, user: user })
+                .then(() => setItem(null));
+        }
     }
 
     if (isProduct(item)) {
@@ -68,7 +94,7 @@ export default function EditItem({ editItem }: EditItemProps) {
                         }
                     />
                 </label>
-                <POSButton label="Confirm" onClick={() => null} />
+                <POSButton label="Confirm" onClick={() => submitProduct(item, user!)} />
             </div>
         );
     }
@@ -122,7 +148,7 @@ export default function EditItem({ editItem }: EditItemProps) {
                     }
                 />
             </label>
-            <POSButton label="Confirm" onClick={() => null} />
+            <POSButton label="Confirm" onClick={() => submitCombo(item, user!)} />
         </div>
     );
 }

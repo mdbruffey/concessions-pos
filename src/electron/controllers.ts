@@ -13,7 +13,7 @@ export function addProduct(request: ProductRequest): Product | null {
         [string, string, string, number, string | null, number],
         Product
     >(
-        "INSERT INTO products VALUES(?,?,?,?,?,?) RETURNING *"
+        "INSERT INTO products (name, type, combo_option_type, default_price, image_path, active) VALUES(?,?,?,?,?,?) RETURNING *"
     );
     const newProduct = addProductStmt.get(
         product.name,
@@ -68,7 +68,7 @@ export function addCombo(request: ComboRequest): Combo | null {
         [string, string, number, number, number],
         Combo
     >(
-        "INSERT INTO combos VALUES (?,?,?,?,?) RETURNING *"
+        "INSERT INTO combos (name, main_item_type, main_item_quantity, default_price, active) VALUES (?,?,?,?,?) RETURNING *"
     );
     const updatedCombo = addComboStmt.get(
         combo.name,

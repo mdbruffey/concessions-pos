@@ -15,6 +15,25 @@ export default function ManageWindow() {
     const [users, setUsers] = useState<User[]>([]);
     const [activeEdit, setActiveEdit] = useState<Product | Combo | null>(null);
 
+    const newCombo: Combo = {
+        id: -1,
+        name: "",
+        main_item_type: "",
+        main_item_quantity: 1,
+        default_price: 1,
+        active: 1
+    }
+
+    const newProduct: Product = {
+        id: -1,
+        name: "",
+        type: "",
+        combo_option_type: "",
+        default_price: 1,
+        image_path: null,
+        active: 1
+    }
+
     useEffect(() => {
             window.electron
                 .getProducts()
@@ -96,12 +115,12 @@ export default function ManageWindow() {
                     <div>
                         <h3>Products</h3>
                         <div className={styles.products}>{productCards}</div>
-                        <POSButton label="Add Item" onClick={() => null}/>
+                        <POSButton label="Add Item" onClick={() => setActiveEdit(newProduct)}/>
                     </div>
                     <div>
                         <h3>Combos</h3>
                         <div className={styles.combos}>{comboCards}</div>
-                        <POSButton label="Add Combo" onClick={() => null}/>
+                        <POSButton label="Add Combo" onClick={() => setActiveEdit(newCombo)}/>
                     </div>
                     <div>
                         <h3>Users</h3>
@@ -118,7 +137,7 @@ export default function ManageWindow() {
                 </div>
             )}
             {activeEdit && (
-                <Modal content={<EditItem editItem={activeEdit}/>} close={() => setActiveEdit(null)}/>
+                <Modal content={<EditItem item={activeEdit} setItem={setActiveEdit} user={activeUser}/>} close={() => setActiveEdit(null)}/>
             )}
         </div>
     );
