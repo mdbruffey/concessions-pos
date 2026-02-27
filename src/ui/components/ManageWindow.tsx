@@ -5,6 +5,7 @@ import POSButton from "./POSButton";
 import ProductCard from "./manage/ProductCard";
 import ComboCard from "./manage/ComboCard";
 import Modal from "./Modal";
+import EditItem from "./manage/EditItem";
 
 export default function ManageWindow() {
     const [activeUser, setActiveUser] = useState<User | null>(null);
@@ -63,6 +64,7 @@ export default function ManageWindow() {
         });
     
     const comboCards = combos.map((c, i) => {
+        console.log(typeof c);
         return (
             <ComboCard
                 combo={c}
@@ -116,7 +118,7 @@ export default function ManageWindow() {
                 </div>
             )}
             {activeEdit && (
-                <Modal content={<></>} close={() => setActiveEdit(null)}/>
+                <Modal content={<EditItem editItem={activeEdit}/>} close={() => setActiveEdit(null)}/>
             )}
         </div>
     );
