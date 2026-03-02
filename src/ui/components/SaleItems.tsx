@@ -19,6 +19,7 @@ export default function SaleItems({
     const hotButtons = products.filter((i) => i.type.includes("hot")).map((p, i) => (
         <POSButton
             label={p.name}
+            backgroundColor="darkred"
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
@@ -27,20 +28,25 @@ export default function SaleItems({
         />
     ));
 
-    const drinkButtons = products.filter((i) => i.type.includes("drink")).map((p, i) => (
-        <POSButton
-            label={p.name}
-            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
-                addProduct(p);
-                e.currentTarget.blur();
-            }}
-            key={i}
-        />
-    ));
+    const drinkButtons = products
+        .filter((i) => i.type.includes("drink"))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((p, i) => (
+            <POSButton
+                label={p.name}
+                backgroundColor="darkblue"
+                onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
+                    addProduct(p);
+                    e.currentTarget.blur();
+                }}
+                key={i}
+            />
+        ));
 
     const frozenButtons = products.filter((i) => i.type.includes("frozen")).map((p, i) => (
         <POSButton
             label={p.name}
+            backgroundColor="gray"
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
@@ -51,6 +57,7 @@ export default function SaleItems({
     const chipButtons = products.filter((i) => i.type.includes("chip")).map((p, i) => (
         <POSButton
             label={p.name}
+            backgroundColor="purple"
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
@@ -58,19 +65,24 @@ export default function SaleItems({
             key={i}
         />
     ));
-    const candyButtons = products.filter((i) => i.type.includes("candy")).map((p, i) => (
-        <POSButton
-            label={p.name}
-            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
-                addProduct(p);
-                e.currentTarget.blur();
-            }}
-            key={i}
-        />
-    ));
+    const candyButtons = products
+        .filter((i) => i.type.includes("candy"))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((p, i) => (
+            <POSButton
+                label={p.name}
+                backgroundColor="green"
+                onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
+                    addProduct(p);
+                    e.currentTarget.blur();
+                }}
+                key={i}
+            />
+        ));
     const specialButtons = products.filter((i) => i.type.includes("special")).map((p, i) => (
         <POSButton
             label={p.name}
+            backgroundColor="brown"
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => {
                 addProduct(p);
                 e.currentTarget.blur();
@@ -80,7 +92,12 @@ export default function SaleItems({
     ));
 
     const comboButtons = combos.map((c, i) => (
-        <POSButton label={c.name} onClick={() => createComboModal(c)} key={i} />
+        <POSButton
+            label={c.name}
+            backgroundColor="sienna"
+            onClick={() => createComboModal(c)}
+            key={i}
+        />
     ));
 
     const addProduct = (product: Product) => {
