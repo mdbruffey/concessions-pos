@@ -8,7 +8,7 @@ try{
     device = new USB();
     printer = new escpos.Printer(device);
 }
-catch(error) {console.log(error)}
+catch(error) {console.log("Error finding printer.")}
 
 export function printText(text: string) {
     let ran = false
@@ -28,6 +28,10 @@ export function printText(text: string) {
 
 export function printReceipt(receipt: Receipt){
     let ran = false
+    if(!device) {
+        console.log("No print device connected.")
+        return ran
+    }
     device.open(() => {
         if (!ran){
             for (let i = 0; i < 2; i++){
