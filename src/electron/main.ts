@@ -3,7 +3,7 @@ import path from "path";
 import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
 import * as api from "./controllers.js";
-import { printText, printReceipt } from "./printer.js";
+import { printReceipt } from "./printer.js";
 
 const db = database;
 let width = 2560;
