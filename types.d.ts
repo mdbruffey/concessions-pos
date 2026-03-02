@@ -175,6 +175,10 @@ type EventPayloadMapping = {
         request: undefined;
         response: boolean;
     }
+    printReceipt: {
+        request: Receipt;
+        response: boolean;
+    }
     getSessions: {
         request: undefined;
         response: Session[];
@@ -206,6 +210,7 @@ interface Window {
         endShift: (user: User) => Promise<Shift>;
         createSale: (sale: Sale) => Promise<number>;
         openDrawer: () => Promise<boolean>;
+        printReceipt: (receipt: Receipt) => Promise<boolean>;
         getSessions: () => Promise<Session[]>;
         getSalesBySession: (id: number) => Promise<Sale[]>;
     };

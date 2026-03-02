@@ -28,7 +28,7 @@ app.on("ready", () => {
     } else {
         mainWindow.setFullScreen(true);
         mainWindow.loadFile(
-            path.join(app.getAppPath(), "/dist-react/index.html")
+            path.join(app.getAppPath(), "/dist-react/index.html"),
         );
     }
     //Product Handling
@@ -56,14 +56,19 @@ app.on("ready", () => {
     ipcMainHandle("endShift", (_, user) => api.endShift(user));
     ipcMainHandle("createSale", (_, sale) => api.createSale(sale));
     ipcMainHandle("openDrawer", () => api.openDrawer());
+    ipcMainHandle("printReceipt", (_, receipt) => printReceipt(receipt));
 
     //Report Handling
     ipcMainHandle("getSessions", () => api.getSessions());
     ipcMainHandle("getSalesBySession", (_, id) => api.getSalesBySession(id));
 
     //TestPrint
-    const receipt = { number: 1, content: "1x Hotdog\n1x Sprite" };
-    printReceipt(receipt);
+    try {
+        const receipt = { number: 1, content: "1x Hotdog\n1x Sprite" };
+        printReceipt(receipt);
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 app.on("before-quit", () => {

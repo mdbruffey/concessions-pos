@@ -69,6 +69,8 @@ export default function SaleWindow({users, session}: SaleWindowProps) {
                     sale={sale}
                     setSale={setSale}
                     users={users}
+                    products={products}
+                    combos={combos}
                     setShowCheckoutModal={setShowCheckoutModal}
                 />
             )}

@@ -1,8 +1,14 @@
 import escpos from "escpos";
 import USB from "escpos-usb";
 
-const device = new USB();
-const printer = new escpos.Printer(device);
+let device: any;
+let printer: escpos.Printer;
+
+try{
+    device = new USB();
+    printer = new escpos.Printer(device);
+}
+catch(error) {console.log(error)}
 
 export function printText(text: string) {
     let ran = false
@@ -42,4 +48,5 @@ export function printReceipt(receipt: Receipt){
             ran = true;
         }
     });
+    return ran;
 }

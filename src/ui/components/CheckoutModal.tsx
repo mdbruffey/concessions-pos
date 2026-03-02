@@ -1,10 +1,13 @@
+import { generateReceipt } from "../utils"
 import POSButton from "./POSButton"
 import { emptySale } from "./SaleWindow"
 import styles from "./styles/CheckoutModal.module.css"
 
 type CheckoutModalProps = {
-    sale: Sale
+    sale: Sale;
     users: User[];
+    products: Product[];
+    combos: Combo[]
     setSale: React.Dispatch<React.SetStateAction<Sale>>
     setShowCheckoutModal: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -13,6 +16,8 @@ export default function CheckoutModal({
     sale,
     setSale,
     users,
+    products,
+    combos,
     setShowCheckoutModal,
 }: CheckoutModalProps) {
     const setPaymentType = (paymentType: "cash" | "card" | "tab") => {
@@ -68,6 +73,9 @@ export default function CheckoutModal({
                                 const response =
                                     await window.electron.createSale(finalSale);
                                 console.log(response);
+                                const receipt = generateReceipt({...sale, id: response}, products, combos)
+                                console.log(receipt.content)
+                                window.electron.printReceipt(receipt);
                             } catch (error) {
                                 console.log(error);
                             }

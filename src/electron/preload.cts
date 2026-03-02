@@ -19,6 +19,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
     startShift: (user) => ipcInvoke("startShift", user),
     endShift: (user) => ipcInvoke("endShift", user),
     createSale: (sale) => ipcInvoke("createSale", sale),
+    printReceipt: (receipt) => ipcInvoke("printReceipt", receipt),
     openDrawer: () => ipcInvoke("openDrawer"),
     getSessions: () => ipcInvoke("getSessions"),
     getSalesBySession: (id) => ipcInvoke("getSalesBySession", id),
