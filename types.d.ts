@@ -72,6 +72,11 @@ type Shift = {
     end: string | null;
 }
 
+type Receipt = {
+    number: number;
+    content: string;
+}
+
 /**Request object for starting a new session */
 type StartSessionRequest = {
     user: User;
