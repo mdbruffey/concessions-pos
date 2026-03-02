@@ -39,3 +39,13 @@ export function generateReceipt(sale: Sale, products: Product[], combos: Combo[]
     }
     return {number: number, content: content} as Receipt
 }
+
+export function containsHotFood(sale: Sale, products: Product[]){
+    for (let item of sale.items){
+        if (item.combo_id) return true;
+        if (products.filter((p) => p.id === item.product_id)[0].type.includes("hot")) {
+            return true;
+        }
+    }
+    return false;
+}

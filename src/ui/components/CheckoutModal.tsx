@@ -1,4 +1,4 @@
-import { generateReceipt } from "../utils"
+import { containsHotFood, generateReceipt } from "../utils"
 import POSButton from "./POSButton"
 import { emptySale } from "./SaleWindow"
 import styles from "./styles/CheckoutModal.module.css"
@@ -72,10 +72,10 @@ export default function CheckoutModal({
                                 }
                                 const response =
                                     await window.electron.createSale(finalSale);
-                                console.log(response);
-                                const receipt = generateReceipt({...sale, id: response}, products, combos)
-                                console.log(receipt.content)
-                                window.electron.printReceipt(receipt);
+                                if(containsHotFood(sale, products)){
+                                    const receipt = generateReceipt({...sale, id: response}, products, combos)
+                                    window.electron.printReceipt(receipt);
+                                }
                             } catch (error) {
                                 console.log(error);
                             }
