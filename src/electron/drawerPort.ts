@@ -3,7 +3,7 @@ import { SerialPort } from "serialport";
 let port: SerialPort;
 
 function createPort(path = "/dev/ttyUSB0", baudRate = 9600) {
-    port = new SerialPort({ path: path, baudRate: baudRate });
+    port = new SerialPort({ path: path, baudRate: baudRate }, (error) => console.log(error));
 }
 
 function getPort() {

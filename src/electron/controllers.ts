@@ -311,7 +311,8 @@ export function createSale(sale: Sale): number {
 
 export function openDrawer(): boolean {
     const port = getPort();
-    if (!port.isOpen){
+    if (!port.isOpen) {
+        console.log("Drawer port not open")
         return false;
     }
     port.write(Buffer.from([0x07]), (err) => {
