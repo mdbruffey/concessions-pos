@@ -6,7 +6,7 @@ let printer: escpos.Printer;
 
 function getPrinter(){
     try{
-        device = new USB();
+        device = new USB(0x04b8, 0x0e20);
         printer = new escpos.Printer(device);
     }
     catch(error) {console.log("Error finding printer.")}
