@@ -1,5 +1,5 @@
 import db from "./database/db.js";
-import getPort from "./drawerPort.js";
+import { sendOpen } from "./drawerPort.js";
 
 export function getProducts(): Product[] {
     const allProducts = db.prepare<[], Product>("SELECT * from products");
@@ -310,23 +310,7 @@ export function createSale(sale: Sale): number {
 }
 
 export function openDrawer(): boolean {
-    let port = getPort();
-    if (!port.isOpen) {
-        console.log("Drawer port not open. Retrying...")
-        port = getPort();
-        if(!port.isOpen) {
-            console.log("Drawer port still closed.")
-            return false;
-        }
-    }
-    port.write(Buffer.from([0x07]), (err) => {
-        if (err) {
-            console.error("Failed to open drawer", err);
-            return false;
-        }
-    });
-    console.log("Drawer triggered");
-    return true;
+    return sendOpen();
 }
 
 export function getSessions(): Session[] {

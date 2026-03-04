@@ -3,7 +3,8 @@ import path from "path";
 import { ipcMainHandle, isDev } from "./utils.js";
 import database from "./database/db.js";
 import * as api from "./controllers.js";
-import { printReceipt } from "./printer.js";
+import { initPrinter, printReceipt } from "./printer.js";
+import { initDrawer } from "./drawerPort.js";
 
 const db = database;
 let width = 2560;
@@ -62,13 +63,11 @@ app.on("ready", () => {
     ipcMainHandle("getSessions", () => api.getSessions());
     ipcMainHandle("getSalesBySession", (_, id) => api.getSalesBySession(id));
 
-    //TestPrint
-    try {
-        const receipt = { number: 1, content: "1x Hotdog\n1x Sprite" };
-        printReceipt(receipt);
-    } catch (error) {
-        console.log(error);
-    }
+    //Initialize Drawer
+    initDrawer();
+
+    //Initialize Printer
+    initPrinter();
 });
 
 app.on("before-quit", () => {
